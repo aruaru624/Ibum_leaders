@@ -39,7 +39,7 @@ struct HomeView: View {
             VStack{
                 Gauge(value: questSum > 0 ? Double(questClearSum) / Double(questSum) : 0, in: 0 ... 1){
                     
-                }.gaugeStyle(.accessoryCircularCapacity)
+                }.gaugeStyle(.linearCapacity)
                     
                 
                 ZStack{
@@ -191,13 +191,17 @@ struct HomeView: View {
                             }
                             
                             questSum = quests.count
-                            for quest in quests {
-                                if !quest.ids.isEmpty{
-                                    questClearSum += 1
-                                }
-                            }
-                            
+                            questClearSum = quests.filter { !$0.ids.isEmpty }.count
+//                            var sum = 0
+//                            for quest in quests {
+//                                if !quest.ids.isEmpty{
+//                                    sum += 1
+//                                }
+//                            }
+//                            questClearSum = sum
+//
                         }
+                        
                        
                     }
                     
