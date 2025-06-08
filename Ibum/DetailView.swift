@@ -22,6 +22,7 @@ struct DetailView: View {
     
     @State var isShowAlert = false
     @State var isShowSavedAlert = false
+    
 
     var body: some View {
         ZStack{
@@ -172,6 +173,7 @@ struct DetailView: View {
         
         
     }
+    
     @MainActor
     func deletePhoto(){
         do{
