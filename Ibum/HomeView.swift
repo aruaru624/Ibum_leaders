@@ -2,6 +2,52 @@ import SwiftUI
 import SwiftData
 import AVFoundation
 
+struct AchivementGaugeStyle:GaugeStyle{
+    
+    let gaugeWidth:CGFloat = 30
+    let gaugeHeight:CGFloat = 30
+    
+//    let questCount = 20
+    
+    @State var questCount = 20
+    
+    @State var questClearCount = 0
+        
+        func makeBody(configuration: Configuration) -> some View {
+            ZStack{
+                TimelineView(.animation) { timeline in
+                            GeometryReader { geometry in
+                                Path { path in
+                                    path.move(to: CGPoint(x: 0, y: geometry.size.height * (1 - configuration.value)))
+                                    
+                                    // stride(from: 開始値, to: 終了値, by: 刻み幅)
+                                    /// `by`の刻み幅を`to`に追加しないと右側に隙間が発生しちゃう
+                                    stride(from: 0, to: geometry.size.width + 1, by: 1).forEach { x in
+                                        let time = timeline.date.timeIntervalSince1970
+                                        let y = sin(Double(x) / 180.0 * .pi + time * 1.2) * 5 + Double(geometry.size.height  * (1 - configuration.value))
+                                        path.addLine(to: CGPoint(x: x, y: CGFloat(y)))
+                                    }
+                                    
+                                    // 波の下半分を塗りつぶす
+                                    path.addLine(to: CGPoint(x: geometry.size.width, y: geometry.size.height))
+                                    path.addLine(to: CGPoint(x: 0, y: geometry.size.height))
+                                    path.closeSubpath()
+                                }
+                                .fill(.blue)
+                            }
+                        }
+                HStack(alignment: .center){
+                    Text(String(Int(configuration.value * 100)))
+                        .font(.system(size: 80, weight: .bold, design: .rounded))
+                        .foregroundColor(.gray)
+                    Text("%")
+                }
+            }.clipShape(Circle())
+            
+        }
+}
+
+
 struct LazyView<Content: View>: View {
     let build: () -> Content
     init(_ build: @autoclosure @escaping () -> Content) {
@@ -43,18 +89,15 @@ struct HomeView: View {
                     
                 
                 ZStack{
-//                    Color(red: 188/255, green: 219/255, blue: 223/255)
-//                        .opacity(0.91)
-//                        .ignoresSafeArea()
-//                    LinearGradient(gradient: Gradient(colors: [Color.white,Color(red: 151/255, green: 254/255, blue: 237/255),Color.white]),startPoint: .top, endPoint: .bottom)
-//                        .ignoresSafeArea()
                     ScrollView(.vertical){
                         VStack{
-                            ZStack(alignment: .leading) {
+                            ZStack(alignment: .center) {
                                 Gauge(value: questSum > 0 ? Double(questClearSum) / Double(questSum) : 0, in: 0 ... 1){}
-                                    .gaugeStyle(.linearCapacity)
-                                    .padding([.leading,.trailing],30)
-                                    .padding([.top,.bottom],30)
+                                    .gaugeStyle(AchivementGaugeStyle(questCount: questClearSum, questClearCount: questSum))
+//                                    .frame(minHeight:150,maxHeight:200)
+                                    .frame(idealWidth:200,idealHeight:200)
+                                    .padding(10)
+//
                                 
                             }
                             LazyVGrid(columns: columns,spacing:0){
@@ -63,40 +106,20 @@ struct HomeView: View {
                                     ZStack{
                                         UnevenRoundedRectangle(
                                           topLeadingRadius: 0,
-                                          bottomLeadingRadius: 15,
+                                          bottomLeadingRadius: 0,
                                           bottomTrailingRadius: 0,
                                           topTrailingRadius: 15,
                                           style: .continuous)
                                         .fill(.red)
-                                            .offset(x:5,y:5)
+                                        .offset(x:5,y:5)
                                         UnevenRoundedRectangle(
                                           topLeadingRadius: 0,
-                                          bottomLeadingRadius: 15,
+                                          bottomLeadingRadius: 0,
                                           bottomTrailingRadius: 0,
                                           topTrailingRadius: 15,
                                           style: .continuous)
                                         .fill(Color(red: 31/255, green: 37/255, blue: 54/255))
-//                                            .padding(5)
-                                            .shadow(radius: 2)
-                                        
-                                            
-         
-    //                                        .frame(width:UIScreen.main.bounds.width / 2 - 15)
-                                        //                                    .background()
-                                        
-//                                            .overlay(
-//                                        UnevenRoundedRectangle(
-//                                          topLeadingRadius: 0,
-//                                          bottomLeadingRadius: 20,
-//                                          bottomTrailingRadius: 0,
-//                                          topTrailingRadius: 20,
-//                                          style: .continuous)
-//
-//                                                    .stroke(LinearGradient(gradient: Gradient(colors: [Color(red: 151/255, green: 254/255, blue: 237/255),Color(red: 53/255, green: 162/255, blue: 159/255)]),startPoint: .top, endPoint: .bottom), lineWidth: 3)
-////                                                    .stroke(Color(red: 53/255, green: 162/255, blue: 159/255), lineWidth: 1)
-////                                                    .shadow(radius: 2)
-//    
-//                                            )
+//                                            .shadow(radius: 2)
                                         
                                         VStack{
                                             
@@ -128,95 +151,62 @@ struct HomeView: View {
                                                    let uiImage = UIImage(data: currentPhoto.photoData) {
                                                     Image(uiImage: uiImage)
                                                         .resizable()
-                                                        .scaledToFit()
-                                                        .frame(width: 100,height:100)
-    //                                                    .padding(20)
-//                                                        .padding(.bottom,20)
-                                                        .padding([.top,.bottom],10)
-                                                        .clipShape(Circle())
-                                                        .shadow(radius: 3)
+                                                        .aspectRatio(9/16, contentMode: .fill)
+                                                        .padding(10)
+                                                        .clipShape(UnevenRoundedRectangle(
+                                                            topLeadingRadius: 0,
+                                                            bottomLeadingRadius: 15,
+                                                            bottomTrailingRadius: 0,
+                                                            topTrailingRadius: 0,
+                                                            style: .continuous))
                                                 }
                                             } else {
                                                 if let image = UIImage(named: String(quest.title)){
                                                     Image(uiImage:image)
-//                                                        .background(.)
                                                         .resizable()
-                                                        .scaledToFit()
-                                                        .frame(width: 100,height:100)
-                                                        .padding([.top,.bottom],10)
-                                                        .clipShape(Circle())
-                                                        .shadow(radius: 3)
-                                                        .foregroundStyle(.white)
-//                                                        .foregroundStyle(
-//                                                           .clear
-//                                                             .shadow(.inner(color: .white.opacity(0.3), radius: 3, x: 1, y: 1))
-//    //                                                         .shadow(.drop(radius: 5, x: 5, y: 5))
-//                                                         )
-    //                                                    .fill(.white)
-    //                                                    .shadow(.inner(color: .black, radius: 10, x: 0, y: 0))
-                                                        .overlay() {
-                                                            ZStack{
-                                                                Image(systemName: "camera")
-                                                                    .resizable()
-                                                                    .scaledToFit()
-                                                                    .scaleEffect(0.4)
-                                                                    .frame(width: 100,height:100)
-    //                                                                .padding(20)
-                                                                    .padding([.top,.bottom],10)
-                                                                    .foregroundStyle(.blue)
-                                                                Circle()
-    //                                                                .stroke(.gray, lineWidth: 1)
-                                                                    .frame(width: 100)
-                                                                    .padding([.top,.bottom],10)    //                                                                .foregroundStyle(
-    //                                                                   .clear
-    //                                                                     .shadow(.inner(color: .black, radius: 10, x: 0, y: 0))
-    //            //                                                         .shadow(.drop(radius: 5, x: 5, y: 5))
-    //                                                                 )
-    //                                                                .shadow(.inner(color: .black, radius: 10, x: 0, y: 0))
-                                                                
-    //                                                                .foregra
-
-    //                                                                .padding(20)
-                                                            }
-                                                            
+                                                        .aspectRatio(9/16, contentMode: .fill)
+                                                        .padding(10)
+                                                        .clipShape(UnevenRoundedRectangle(
+                                                            topLeadingRadius: 0,
+                                                            bottomLeadingRadius: 15,
+                                                            bottomTrailingRadius: 0,
+                                                            topTrailingRadius: 0,
+                                                            style: .continuous))
+                                                        .overlay{
+                                                            UnevenRoundedRectangle(
+                                                                topLeadingRadius: 0,
+                                                                bottomLeadingRadius: 15,
+                                                                bottomTrailingRadius: 0,
+                                                                topTrailingRadius: 0,
+                                                                style: .continuous)
+                                                            .fill(.clear)
+                                                            .border(.white, width: 2)
+                                                            .padding(10)
                                                             
                                                         }
                                                 }else{
-                                                    Image(systemName: "camera")
-                                                        .resizable()
-                                                        .scaledToFit()
-                                                        .scaleEffect(0.4)
-                                                        .frame(width: 100,height:100)
-    //                                                    .padding(20)
-//                                                        .padding(.bottom,20)
-                                                        .clipShape(Circle())
-                                                        .shadow(radius: 3)
-                                                        .foregroundStyle(.blue)
-                                                        .padding([.top,.bottom],10)
-                                                        .overlay() {
-                                                            Circle()
-                                                                .stroke(.gray, lineWidth: 1)
-                                                                .frame(width: 100)
-                                                                .padding([.top,.bottom],10)
-    //                                                            .padding(20)
+                                                    ZStack{
+                                                        Color.clear
+                                                            .aspectRatio(9/16, contentMode: .fit)
+                                                            .padding(10)
+                                                        Image(systemName: "camera")
+                                                            .resizable()
+                                                            .scaledToFit()
+                                                            .padding(10)
+                                                            .scaleEffect(0.4)
+                                                            .foregroundStyle(.blue)
+                                                        
                                                             
-                                                        }
+                                                            
+                                                    }
+                                                    
                                                     
                                                     
                                                 }
                                                 
                                                 
                                             }
-                                            Text("Lv.1")
-                                                .fontWeight(.medium)
-                                                .foregroundStyle(.white)
-                                            Gauge(value:0.5, in: 0 ... 1){}
-                                                .gaugeStyle(.linearCapacity)
-                                                .padding([.leading,.trailing],10)
-                                                .padding(.bottom,20)
-//                                                .a
                                         }
-    //                                    .frame(width:UIScreen.main.bounds.width / 2 - 15 , height: (UIScreen.main.bounds.width / 2 - 15) / 4 * 5)
                                         .onTapGesture {
                                             let status = AVCaptureDevice.authorizationStatus(for: AVMediaType.video)
                                             if status == AVAuthorizationStatus.authorized {
@@ -237,20 +227,15 @@ struct HomeView: View {
                                                 }else{
                                                     showViewController = true
                                                 }
-                                                //                                isPresented = true
-                                                //                                    isPresentedCamera.isOn = true
                                                 print("aaaaafsdf")
-                                                
-                                                
-                                                
                                             }else{
                                                 AVCaptureDevice.requestAccess(for: .video, completionHandler: { granted in
-                                                    //                                        showViewController = true
                                                 })
                                             }
                                         }
-                                    }.padding(10)
-                                    
+                                    }
+                                    .padding([.trailing,.bottom],10)
+                                    .padding(.leading,5)
                                     
                                     
                                     
@@ -276,14 +261,6 @@ struct HomeView: View {
                             
                             questSum = quests.count
                             questClearSum = quests.filter { !$0.ids.isEmpty }.count
-//                            var sum = 0
-//                            for quest in quests {
-//                                if !quest.ids.isEmpty{
-//                                    sum += 1
-//                                }
-//                            }
-//                            questClearSum = sum
-//
                         }
                         
                        
@@ -310,9 +287,6 @@ struct HomeView: View {
         
     }
 }
-//#Preview {
-//    HomeView()
-//}
 
 class isPresenteCamera: ObservableObject {
     
