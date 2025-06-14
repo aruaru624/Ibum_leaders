@@ -78,7 +78,9 @@
 		23A4B2962DFE2C5700316803 /* Exceptions for "Ibum" folder in "recomendWidgetExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				AppDelegate.swift,
 				DataModel.swift,
+				ModelContainer.swift,
 				QuestDatabase.swift,
 				QuestDatamodel.swift,
 			);

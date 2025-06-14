@@ -11,23 +11,64 @@ import SwiftData
 
 struct Provider: AppIntentTimelineProvider {
     func placeholder(in context: Context) -> SimpleEntry {
-        SimpleEntry(date: Date(), num: Int.random(in: 0...15), configuration: ConfigurationAppIntent())
+        SimpleEntry(date: Date(), quest: Quest(
+            title: "グッジョブ！",
+            ids: [],
+            tags: [.genki, .pose],
+            favorite: false,
+            clear: false,
+            explation: "元気よく親指を立てるポジティブなポーズ",
+            recommendedPoses: ["ウインクしながら", "軽く前かがみで", "大きく腕を伸ばして"],
+            recommendedLocation: "芝生の上で太陽に向かって",
+            rarity: .common
+        ), configuration: ConfigurationAppIntent())
     }
 
     func snapshot(for configuration: ConfigurationAppIntent, in context: Context) async -> SimpleEntry {
-        SimpleEntry(date: Date(), num: Int.random(in: 0...15), configuration: configuration)
+        SimpleEntry(date: Date(), quest: Quest(
+            title: "グッジョブ！",
+            ids: [],
+            tags: [.genki, .pose],
+            favorite: false,
+            clear: false,
+            explation: "元気よく親指を立てるポジティブなポーズ",
+            recommendedPoses: ["ウインクしながら", "軽く前かがみで", "大きく腕を伸ばして"],
+            recommendedLocation: "芝生の上で太陽に向かって",
+            rarity: .common
+        ), configuration: configuration)
     }
     
     func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<SimpleEntry> {
         var entries: [SimpleEntry] = []
+        
+        var quest :Quest?
 
+        Task { @MainActor in
+                    
+                // SwiftDataからデータ取得
+        let context = sharedModelContainer.mainContext
+        let quests = (try? context.fetch(FetchDescriptor<Quest>())) ?? []
+        quest = quests.randomElement()
+                    // 取得したデータを使ってentriesに追加
+        }
         // Generate a timeline consisting of five entries an hour apart, starting from the current date.
+        
         let currentDate = Date()
         for hourOffset in 0 ..< 5 {
             let entryDate = Calendar.current.date(byAdding: .hour, value: hourOffset, to: currentDate)!
             let num = Int.random(in: 0...15)
             print(num)
-            let entry = SimpleEntry(date: entryDate, num: num, configuration: configuration)
+            let entry = SimpleEntry(date: entryDate, quest: quest ?? Quest(
+                title: "グッジョブ！",
+                ids: [],
+                tags: [.genki, .pose],
+                favorite: false,
+                clear: false,
+                explation: "元気よく親指を立てるポジティブなポーズ",
+                recommendedPoses: ["ウインクしながら", "軽く前かがみで", "大きく腕を伸ばして"],
+                recommendedLocation: "芝生の上で太陽に向かって",
+                rarity: .common
+            ), configuration: configuration)
             
             entries.append(entry)
         }
@@ -42,7 +83,7 @@ struct Provider: AppIntentTimelineProvider {
 
 struct SimpleEntry: TimelineEntry {
     let date: Date
-    let num :Int
+    let quest :Quest
     let configuration: ConfigurationAppIntent
 }
 
@@ -61,42 +102,41 @@ struct recomendWidgetEntryView : View {
                 .ignoresSafeArea()
             HStack {
                 
-                if entry.num < quests.count{
-                    VStack{
-                        Text(quests[entry.num].title)
-                        Text("オススメ")
-                        Text(quests[entry.num].recommendedLocation)
-                    }
-                    if let image = UIImage(named: String(quests[entry.num].title)){
-                        ZStack{
-                            Color.white
-                                .aspectRatio(2/3, contentMode: .fit)
-                                .padding(10)
-                            Image(uiImage:image)
-                                .resizable()
-                                .aspectRatio(2/3, contentMode: .fill)
-                                .padding(10)
-                                .clipShape(UnevenRoundedRectangle(
-                                    topLeadingRadius: 0,
-                                    bottomLeadingRadius: 15,
-                                    bottomTrailingRadius: 0,
-                                    topTrailingRadius: 0,
-                                    style: .continuous))
-        //                    Image(systemName: "camera")
-        //                        .resizable()
-        //                        .scaledToFit()
-        //                        .padding(10)
-        //                        .scaleEffect(0.4)
-        //                        .foregroundStyle(Color(red: 53/255, green: 162/255, blue: 159/255))
-                        }
-                        
-                          
-                        
-                    }
 
-                }else{
-                    Text("次の更新をお楽しみに！")
-                        .fontWeight(.bold)
+                    VStack{
+                        Text(entry.quest.title)
+                            .fontWeight(.bold)
+                            .font(.system(size: 7))
+                        Text("オススメ")
+                            .font(.system(size: 3))
+                        Text(entry.quest.recommendedLocation)
+                            .font(.system(size: 5))
+                    }
+                ZStack{
+                    Color.white
+                        .aspectRatio(2/3, contentMode: .fit)
+//                        .padding(10)
+                    if let image = UIImage(named: String(entry.quest.title)){
+                        Image(uiImage:image)
+                            .resizable()
+                            .aspectRatio(2/3, contentMode: .fill)
+//                            .padding(10)
+                            .clipShape(UnevenRoundedRectangle(
+                                topLeadingRadius: 0,
+                                bottomLeadingRadius: 15,
+                                bottomTrailingRadius: 0,
+                                topTrailingRadius: 0,
+                                style: .continuous))
+                        //                    Image(systemName: "camera")
+                        //                        .resizable()
+                        //                        .scaledToFit()
+                        //                        .padding(10)
+                        //                        .scaleEffect(0.4)
+                        //                        .foregroundStyle(Color(red: 53/255, green: 162/255, blue: 159/255))
+                    }
+                    
+                    
+                    
                 }
             }
         }

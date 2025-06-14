@@ -8,16 +8,10 @@ struct IbumApp: App {
        @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
 
        // SwiftData用のModelContainer
-       let container: ModelContainer
+       let container: ModelContainer = sharedModelContainer
 
        init() {
-           do {
-               container = try ModelContainer(for: Quest.self,Photo.self)
-               // AppDelegateにModelContextを渡す
-               AppDelegate.shared.modelContext = container.mainContext
-           } catch {
-               fatalError("ModelContainerの初期化に失敗しました: \(error)")
-           }
+           AppDelegate.shared.modelContext = container.mainContext
        }
     
     @StateObject private var isPresentedCamera = isPresenteCamera()
