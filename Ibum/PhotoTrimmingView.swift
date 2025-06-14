@@ -8,6 +8,9 @@ import SwiftData
 //}
 
 struct PhotoTrimmingView: View {
+    
+    @State private var showAlertView = false
+    
     let dismissToRoot: () -> Void
     let onDismiss: () -> Void
     
@@ -69,6 +72,7 @@ struct PhotoTrimmingView: View {
         
 //        VStack {
             ZStack{
+                
                 Image(uiImage: image)
                     .resizable()
                     .scaleEffect(scale)
@@ -113,7 +117,25 @@ struct PhotoTrimmingView: View {
                     }
                     .padding(.top,height / 5 * 4)
                     
-
+                VStack{
+                    HStack{
+                        Button(action:{
+                            showAlertView.toggle()
+                        }){
+                            Image(systemName: "xmark.circle.fill")
+                                    .foregroundColor(.gray)
+                                    .font(.title)
+                                    .padding(.leading,20)
+//                            ZStack{
+//                                Circle()
+//                                Image(systemName: "")
+//                            }
+                        }
+                        Spacer()
+                    }
+                    .padding(.top,30)
+                    Spacer()
+                }
                 Rectangle()
                     .fill(.black)
                     .opacity(0.7)
@@ -131,6 +153,23 @@ struct PhotoTrimmingView: View {
                     print(error)
                 }
                 
+            }
+            .alert("確認", isPresented: $showAlertView) {
+                // ダイアログ内で行うアクション処理...
+                Button("いいえ",role: .cancel){}
+                Button("はい",role: .destructive){
+                    Task{
+                        dismiss()
+//                       deletePhoto()
+                    }
+                   
+                    
+                    
+                }
+
+            } message: {
+                // アラートのメッセージ...
+                Text("写真を再度撮影しますか")
             }
             
             

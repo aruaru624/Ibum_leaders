@@ -62,20 +62,29 @@ struct LazyView<Content: View>: View {
 struct HomeView: View {
     @Environment(\.modelContext) private var context
     
-    
-    
-    
     @StateObject private var isPresentedCamera = isPresenteCamera()
     
     @State  var chosenQuestPhoto:Photo = Photo(saveDate: Date(), photoData: Data(), scale: 1, centerX: 1, centerY: 1, registerSns: [], best: false, questTitle: "", id: "")
     @Query private var quests: [Quest]
     @State var flag = false
     @State var questTitle = ""
+    @State var chooseQuest : Quest = Quest(
+        title: "グッジョブ！",
+        ids: [],
+        tags: [.genki, .pose],
+        favorite: false,
+        clear: false,
+        explation: "元気よく親指を立てるポジティブなポーズ",
+        recommendedPoses: ["ウインクしながら", "軽く前かがみで", "大きく腕を伸ばして"],
+        recommendedLocation: "芝生の上で太陽に向かって",
+        rarity: .common
+    )
     
     let columns = [GridItem(.flexible(),spacing: 0), GridItem(.flexible(),spacing: 0)]
     
     @State private var showViewController = false
     @State private var showDetailView = false
+    @State private var showThankView = false
     
     @State var questSum:Int = 0
     @State var questClearSum:Int = 0
@@ -265,6 +274,7 @@ struct HomeView: View {
                                             let status = AVCaptureDevice.authorizationStatus(for: AVMediaType.video)
                                             if status == AVAuthorizationStatus.authorized {
                                                 questTitle = quest.title
+                                                chooseQuest = quest
                                                 print(quests.first)
                                                 
                                                 if(!quest.ids.isEmpty){
@@ -279,7 +289,8 @@ struct HomeView: View {
                                                     
                                                     
                                                 }else{
-                                                    showViewController = true
+//                                                    showViewController = true
+                                                    showThankView = true
                                                 }
                                                 print("aaaaafsdf")
                                             }else{
@@ -330,7 +341,58 @@ struct HomeView: View {
                     .sheet(isPresented:$showDetailView){
                         DetailView(photo: $chosenQuestPhoto,title:chosenQuestPhoto.questTitle)
                     }
-                    
+                    ZStack{
+                        RoundedRectangle(cornerRadius: 10)
+                            .padding(40)
+                            .foregroundStyle(.white)
+//                            .background(.white)
+                        VStack{
+                            HStack{
+                                Button(action:{
+                                    showThankView = false
+                                }){
+                                    Image(systemName: "xmark.circle.fill")
+                                            .foregroundColor(.gray)
+                                            .font(.title)
+                                            .padding(.leading,10)
+        //                            ZStack{
+        //                                Circle()
+        //                                Image(systemName: "")
+        //                            }
+                                }
+                                Spacer()
+                            }
+                           
+                            Text("撮影ありがとうございます！")
+                            Text("クエスト：" + String(chooseQuest.title))
+                            Text(chooseQuest.recommendedLocation)
+                            if let image = UIImage(named: String(chooseQuest.title)){
+                                Image(uiImage:image)
+                                    .resizable()
+                                    .scaledToFit()
+                            }
+                            Button(action: {
+//                                flag = true
+//                                add()
+                                showThankView = false
+                                showViewController = true
+                            }){
+                                Text("撮影する")
+//                                    .frame(width: width / 2 ,height: 50)
+//                                    .font(.system(size: 30))
+                                    .fontWeight(.semibold)
+                                    .foregroundStyle(.white)
+                                    .background(Color(red: 53/255, green: 162/255, blue: 159/255))
+                                    .clipped()
+                                    .cornerRadius(10)
+                                    .padding(10)
+                            }
+                            
+                        }
+                        .padding(50)
+                        
+                        
+                    }.opacity(showThankView ? 1 : 0)
                 }
             }
             
