@@ -1,5 +1,6 @@
 import SwiftUI
 import SwiftData
+import AudioToolbox
 //class trimmingViewController:UIViewController{
 //    
 //    override func viewDidLoad() {
@@ -103,7 +104,12 @@ struct PhotoTrimmingView: View {
                     .gesture(SimultaneousGesture(drag,pinch))
 
                     Button(action: {
-                        flag = true
+//                        flag = true
+                        withAnimation(.easeIn(duration: 0.3)) {
+                            flag = true
+                        }completion: {
+                            UINotificationFeedbackGenerator().notificationOccurred(.success)
+                        }
                         add()
                     }){
                         Text("追 加")
@@ -183,29 +189,40 @@ struct PhotoTrimmingView: View {
                 .shadow(radius: 3)
             VStack{
                 Text(questTitle)
-                    .padding(.top,height / 16)
+                    .padding(.top,height / 20)
                     .fontWeight(.semibold)
                     .font(.system(size: 20))
                     .foregroundStyle(.black)
                 Image(uiImage: image)
                     .resizable()
-                    .frame(width: width / 3 * 2 - 50)
+                    .frame(height: height / 3)
 //                    .position(x: position.x, y: position.y)
                     .scaledToFit()
-                    .clipShape(Circle())
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
                     .overlay() {
-                        Circle()
+                        RoundedRectangle(cornerRadius: 10)
                             .stroke(LinearGradient(gradient: Gradient(colors: [Color(red: 151/255, green: 254/255, blue: 237/255),Color(red: 53/255, green: 162/255, blue: 159/255)]),startPoint: .top, endPoint: .bottom),
-                                    lineWidth: 5)
-                            .frame(width: width / 3  * 2 - 50)
+                                    lineWidth: 2)
+                            .frame(height: height / 3)
 //                            .padding(.bottom, 50)
                         
                     }
-                Text("記念すべき一枚目")
-                    .padding(.bottom,height / 16)
-                    .fontWeight(.semibold)
-                    .font(.system(size: 20))
-                    .foregroundStyle(.black)
+                    .scaleEffect(flag ? 1.0 : 4.0)
+//                           .animation(
+//                             .interpolatingSpring(
+//                               mass: 1.0,
+//                               stiffness: 240.0,
+//                               damping: 12.0,
+//                               initialVelocity: 20.0
+//                             ),
+//                             value: flag
+//                        )
+
+//                Text("記念すべき一枚目")
+//                    .padding(.bottom,height / 16)
+//                    .fontWeight(.semibold)
+//                    .font(.system(size: 20))
+//                    .foregroundStyle(.black)
 
                 
                 
