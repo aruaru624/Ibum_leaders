@@ -33,7 +33,7 @@ struct AchivementGaugeStyle:GaugeStyle{
                                     path.addLine(to: CGPoint(x: 0, y: geometry.size.height))
                                     path.closeSubpath()
                                 }
-                                .fill(.blue)
+                                .fill(Color(red: 53/255, green: 162/255, blue: 159/255))
                             }
                         }
                 HStack(alignment: .center){
@@ -108,7 +108,7 @@ struct HomeView: View {
                                         .padding(10)
                                         .overlay{
                                             Circle()
-                                                .stroke(.gray.opacity(0.4),lineWidth:10)
+                                                .stroke(Color(red: 11/255, green: 102/255, blue: 106/255).opacity(0.4),lineWidth:10)
 //                                                .fill(.clear)
 //                                                .border(.gray.opacity(0.4),width:10)
                                                 .frame(idealWidth:200,idealHeight:200)
@@ -224,29 +224,32 @@ struct HomeView: View {
                                                             style: .continuous))
                                                 }
                                             } else {
+                                                
                                                 if let image = UIImage(named: String(quest.title)){
-                                                    Image(uiImage:image)
-                                                        .resizable()
-                                                        .aspectRatio(2/3, contentMode: .fill)
-                                                        .padding(10)
-                                                        .clipShape(UnevenRoundedRectangle(
-                                                            topLeadingRadius: 0,
-                                                            bottomLeadingRadius: 15,
-                                                            bottomTrailingRadius: 0,
-                                                            topTrailingRadius: 0,
-                                                            style: .continuous))
-                                                        .overlay{
-                                                            UnevenRoundedRectangle(
+                                                    ZStack{
+                                                        Color.white
+                                                            .aspectRatio(2/3, contentMode: .fit)
+                                                            .padding(10)
+                                                        Image(uiImage:image)
+                                                            .resizable()
+                                                            .aspectRatio(2/3, contentMode: .fill)
+                                                            .padding(10)
+                                                            .clipShape(UnevenRoundedRectangle(
                                                                 topLeadingRadius: 0,
                                                                 bottomLeadingRadius: 15,
                                                                 bottomTrailingRadius: 0,
                                                                 topTrailingRadius: 0,
-                                                                style: .continuous)
-                                                            .fill(.clear)
-                                                            .border(.white, width: 2)
+                                                                style: .continuous))
+                                                        Image(systemName: "camera")
+                                                            .resizable()
+                                                            .scaledToFit()
                                                             .padding(10)
-                                                            
-                                                        }
+                                                            .scaleEffect(0.4)
+                                                            .foregroundStyle(Color(red: 53/255, green: 162/255, blue: 159/255))
+                                                    }
+                                                    
+                                                      
+                                                    
                                                 }else{
                                                     ZStack{
                                                         Color.clear
@@ -257,7 +260,7 @@ struct HomeView: View {
                                                             .scaledToFit()
                                                             .padding(10)
                                                             .scaleEffect(0.4)
-                                                            .foregroundStyle(.blue)
+                                                            .foregroundStyle(Color(red: 53/255, green: 162/255, blue: 159/255))
                                                         
                                                             
                                                             
@@ -354,7 +357,7 @@ struct HomeView: View {
                                     Image(systemName: "xmark.circle.fill")
                                             .foregroundColor(.gray)
                                             .font(.title)
-                                            .padding(.leading,10)
+                                            .padding(.leading,5)
         //                            ZStack{
         //                                Circle()
         //                                Image(systemName: "")
@@ -362,14 +365,25 @@ struct HomeView: View {
                                 }
                                 Spacer()
                             }
-                           
-                            Text("撮影ありがとうございます！")
-                            Text("クエスト：" + String(chooseQuest.title))
-                            Text(chooseQuest.recommendedLocation)
+                            Image("Thanks")
+                                .resizable()
+                                .scaledToFit()
+                                .padding([.leading,.trailing],80)
+                        
+                            Text("撮影よろしくお願いします")
+                                .fontWeight(.semibold)
+                                .font(.system(size: 20))
+                                .padding(5)
+                            Text("↓のシルエットに当てはめて撮影")
+//                            Text(chooseQuest.recommendedLocation)
                             if let image = UIImage(named: String(chooseQuest.title)){
                                 Image(uiImage:image)
                                     .resizable()
                                     .scaledToFit()
+                                    .overlay{
+                                        RoundedRectangle(cornerRadius: 10)
+                                            .stroke(.gray,lineWidth: 2)
+                                    }
                             }
                             Button(action: {
 //                                flag = true
@@ -377,15 +391,20 @@ struct HomeView: View {
                                 showThankView = false
                                 showViewController = true
                             }){
-                                Text("撮影する")
-//                                    .frame(width: width / 2 ,height: 50)
-//                                    .font(.system(size: 30))
-                                    .fontWeight(.semibold)
-                                    .foregroundStyle(.white)
-                                    .background(Color(red: 53/255, green: 162/255, blue: 159/255))
-                                    .clipped()
-                                    .cornerRadius(10)
-                                    .padding(10)
+                                ZStack{
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .foregroundStyle(Color(red: 53/255, green: 162/255, blue: 159/255))
+                                        .padding(10)
+                                        .frame(height:70)
+                                    Text("撮影する")
+    //                                    .frame(width: width / 2 ,height: 50)
+    //                                    .font(.system(size: 30))
+//                                        .frame(idealHeight:50)
+                                        .fontWeight(.semibold)
+                                        .foregroundStyle(.white)
+                                        .padding(20)
+                                }
+                                
                             }
                             
                         }
