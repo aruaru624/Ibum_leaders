@@ -67,31 +67,32 @@ struct PhotoTrimmingView: View {
         let width = bounds.width
         let height = bounds.height
         
-        VStack {
+//        VStack {
             ZStack{
                 Image(uiImage: image)
                     .resizable()
                     .scaleEffect(scale)
-                    .frame(width: width)
-                    .scaledToFit()
+                    .frame(width: width,height:width / 2 * 3)
+                    .aspectRatio(2/3, contentMode: .fit)
                     .position(x: position.x, y: position.y)
                     .gesture(SimultaneousGesture(drag,pinch))
                 Rectangle()
                     .fill(.black)
                     .opacity(0.7)
                     .overlay() {
-                        Circle()
-                            .frame(width: width)
+                        Rectangle()
+                            .frame(width: width, height:width / 2 * 3)
                             .blendMode(.destinationOut)
                     }
                     .compositingGroup()
-                Circle()
-                    .stroke(style:
-                                StrokeStyle(
-                                    lineWidth: 5,
-                                    dash: [20, 20]
-                                ))
-                    .frame(width: width)
+                    .ignoresSafeArea()
+//                Rectangle()
+//                    .stroke(style:
+//                                StrokeStyle(
+//                                    lineWidth: 5,
+//                                    dash: [20, 20]
+//                                ))
+//                    .frame(width: width , height:width / 2 * 3)
                 Color.clear
                     .contentShape(Rectangle())
                     .frame(width: width,height: height)
@@ -122,19 +123,19 @@ struct PhotoTrimmingView: View {
                     .opacity(flag ? 1 : 0)
                     
             }
-            
-            
-            
-        }
-        .onAppear{
-            isPresentedCamera.isOn = false
-            do{
-                print(quests.first)
-            }catch{
-                print(error)
+            .onAppear{
+                isPresentedCamera.isOn = false
+                do{
+                    print(quests.first)
+                }catch{
+                    print(error)
+                }
+                
             }
             
-        }
+            
+//        }
+        
         
     }
     
@@ -150,6 +151,7 @@ struct PhotoTrimmingView: View {
                     .padding(.top,height / 16)
                     .fontWeight(.semibold)
                     .font(.system(size: 20))
+                    .foregroundStyle(.black)
                 Image(uiImage: image)
                     .resizable()
                     .frame(width: width / 3 * 2 - 50)
@@ -168,6 +170,8 @@ struct PhotoTrimmingView: View {
                     .padding(.bottom,height / 16)
                     .fontWeight(.semibold)
                     .font(.system(size: 20))
+                    .foregroundStyle(.black)
+
                 
                 
             }

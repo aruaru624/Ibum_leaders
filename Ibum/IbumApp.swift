@@ -35,28 +35,28 @@ struct IbumApp: App {
     
 }
 
-func seedInitialDataIfNeeded(modelContext: ModelContext) async {
-    let fetchDescriptor = FetchDescriptor<Quest>()
-    
-    // すでにデータがあれば何もしない
-    if let count = try? modelContext.fetchCount(fetchDescriptor), count > 0 {
-        return
-    }
-    
-    let items = [
-        Quest(title: "笑顔でピース", ids: [], tags: [.kantan,.genki], favorite: false, clear: false),
-        Quest(title: "自信のかたまり", ids: [], tags: [.cool,.zensin], favorite: false, clear: false),
-        Quest(title: "横顔", ids: [], tags: [.cool,.kao], favorite: false, clear: false),
-        Quest(title: "風になびく", ids: [], tags: [.cool], favorite: false, clear: false),
-        Quest(title: "お願いの姿勢", ids: [], tags: [.kantan,.zensin], favorite: false, clear: false)
-    ]
-
-    for item in items {
-        modelContext.insert(item)
-    }
-
-    try? modelContext.save()
-}
+//func seedInitialDataIfNeeded(modelContext: ModelContext) async {
+//    let fetchDescriptor = FetchDescriptor<Quest>()
+//    
+//    // すでにデータがあれば何もしない
+//    if let count = try? modelContext.fetchCount(fetchDescriptor), count > 0 {
+//        return
+//    }
+//    
+//    let items = [
+//        Quest(title: "笑顔でピース", ids: [], tags: [.kantan,.genki], favorite: false, clear: false),
+//        Quest(title: "自信のかたまり", ids: [], tags: [.cool,.zensin], favorite: false, clear: false),
+//        Quest(title: "横顔", ids: [], tags: [.cool,.kao], favorite: false, clear: false),
+//        Quest(title: "風になびく", ids: [], tags: [.cool], favorite: false, clear: false),
+//        Quest(title: "お願いの姿勢", ids: [], tags: [.kantan,.zensin], favorite: false, clear: false)
+//    ]
+//
+//    for item in items {
+//        modelContext.insert(item)
+//    }
+//
+//    try? modelContext.save()
+//}
 
 
 //extension EnvironmentValues {

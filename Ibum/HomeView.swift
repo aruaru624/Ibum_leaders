@@ -24,7 +24,7 @@ struct AchivementGaugeStyle:GaugeStyle{
                                     /// `by`の刻み幅を`to`に追加しないと右側に隙間が発生しちゃう
                                     stride(from: 0, to: geometry.size.width + 1, by: 1).forEach { x in
                                         let time = timeline.date.timeIntervalSince1970
-                                        let y = sin(Double(x) / 180.0 * .pi + time * 1.2) * 5 + Double(geometry.size.height  * (1 - configuration.value))
+                                        let y = sin(Double(x) / 180.0 * .pi + time * 1.6) * 5 + Double(geometry.size.height  * (1 - configuration.value))
                                         path.addLine(to: CGPoint(x: x, y: CGFloat(y)))
                                     }
                                     
@@ -84,34 +84,88 @@ struct HomeView: View {
         
         NavigationStack{
             VStack{
-
-                
-                    
-                
                 ZStack{
                     ScrollView(.vertical){
                         VStack{
-                            ZStack(alignment: .center) {
-                                Gauge(value: questSum > 0 ? Double(questClearSum) / Double(questSum) : 0, in: 0 ... 1){}
-                                    .gaugeStyle(AchivementGaugeStyle(questCount: questClearSum, questClearCount: questSum))
-//                                    .frame(minHeight:150,maxHeight:200)
-                                    .frame(idealWidth:200,idealHeight:200)
-                                    .padding(10)
-//
-                                
+                            HStack(alignment: .center){
+                                Text("達成率")
+                                    .monospaced()
+                                    .font(.system(size: 30))
+                                    .padding(.leading,30)
+                                ZStack(alignment: .center) {
+                                    Gauge(value: questSum > 0 ? Double(questClearSum) / Double(questSum) : 0, in: 0 ... 1){}
+                                        .gaugeStyle(AchivementGaugeStyle(questCount: questClearSum, questClearCount: questSum))
+                                        .frame(idealWidth:200,idealHeight:200)
+                                        .padding(10)
+                                        .overlay{
+                                            Circle()
+                                                .stroke(.gray.opacity(0.4),lineWidth:10)
+//                                                .fill(.clear)
+//                                                .border(.gray.opacity(0.4),width:10)
+                                                .frame(idealWidth:200,idealHeight:200)
+                                                
+                                                .shadow(radius: 3)
+//                                                .padding(5)
+                                        }
+                                        
+    //
+                                    
+                                }
                             }
+                            .padding(10)
+                            
                             LazyVGrid(columns: columns,spacing:0){
                                 ForEach(quests,id:\.self){ quest in
                                     
                                     ZStack{
-                                        UnevenRoundedRectangle(
-                                          topLeadingRadius: 0,
-                                          bottomLeadingRadius: 0,
-                                          bottomTrailingRadius: 0,
-                                          topTrailingRadius: 15,
-                                          style: .continuous)
-                                        .fill(.red)
-                                        .offset(x:5,y:5)
+                                        switch quest.rarity {
+                                        case .common:
+                                            UnevenRoundedRectangle(
+                                                topLeadingRadius: 0,
+                                                bottomLeadingRadius: 0,
+                                                bottomTrailingRadius: 0,
+                                                topTrailingRadius: 15,
+                                                style: .continuous)
+                                            .fill(.blue)
+                                            .offset(x:5,y:5)
+                                        case .rare:
+                                            UnevenRoundedRectangle(
+                                                topLeadingRadius: 0,
+                                                bottomLeadingRadius: 0,
+                                                bottomTrailingRadius: 0,
+                                                topTrailingRadius: 15,
+                                                style: .continuous)
+                                            .fill(.green)
+                                            .offset(x:5,y:5)
+                                        case .epic:
+                                            UnevenRoundedRectangle(
+                                                topLeadingRadius: 0,
+                                                bottomLeadingRadius: 0,
+                                                bottomTrailingRadius: 0,
+                                                topTrailingRadius: 15,
+                                                style: .continuous)
+                                            .fill(.purple)
+                                            .offset(x:5,y:5)
+                                        case .legendary:
+                                            UnevenRoundedRectangle(
+                                                topLeadingRadius: 0,
+                                                bottomLeadingRadius: 0,
+                                                bottomTrailingRadius: 0,
+                                                topTrailingRadius: 15,
+                                                style: .continuous)
+                                            .fill(.orange)
+                                            .offset(x:5,y:5)
+                                        default:
+                                            UnevenRoundedRectangle(
+                                                topLeadingRadius: 0,
+                                                bottomLeadingRadius: 0,
+                                                bottomTrailingRadius: 0,
+                                                topTrailingRadius: 15,
+                                                style: .continuous)
+                                            .fill(.gray)
+                                            .offset(x:5,y:5)
+                                        }
+                                            
                                         UnevenRoundedRectangle(
                                           topLeadingRadius: 0,
                                           bottomLeadingRadius: 0,
@@ -151,7 +205,7 @@ struct HomeView: View {
                                                    let uiImage = UIImage(data: currentPhoto.photoData) {
                                                     Image(uiImage: uiImage)
                                                         .resizable()
-                                                        .aspectRatio(9/16, contentMode: .fill)
+                                                        .aspectRatio(2/3, contentMode: .fill)
                                                         .padding(10)
                                                         .clipShape(UnevenRoundedRectangle(
                                                             topLeadingRadius: 0,
@@ -164,7 +218,7 @@ struct HomeView: View {
                                                 if let image = UIImage(named: String(quest.title)){
                                                     Image(uiImage:image)
                                                         .resizable()
-                                                        .aspectRatio(9/16, contentMode: .fill)
+                                                        .aspectRatio(2/3, contentMode: .fill)
                                                         .padding(10)
                                                         .clipShape(UnevenRoundedRectangle(
                                                             topLeadingRadius: 0,
@@ -187,7 +241,7 @@ struct HomeView: View {
                                                 }else{
                                                     ZStack{
                                                         Color.clear
-                                                            .aspectRatio(9/16, contentMode: .fit)
+                                                            .aspectRatio(2/3, contentMode: .fit)
                                                             .padding(10)
                                                         Image(systemName: "camera")
                                                             .resizable()

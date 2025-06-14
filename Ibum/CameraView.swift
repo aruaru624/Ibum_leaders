@@ -20,6 +20,8 @@ class CameraViewController: UIViewController{
     override func viewDidLoad(){
         super.viewDidLoad()
         
+        self.view.backgroundColor = .black
+        
         setupCaptureSession()
         setupDevice()
         setupInputOutput()
@@ -91,7 +93,7 @@ class CameraViewController: UIViewController{
         
         //カメラ用のviewを生成
         let cameraUIview = UIView()
-        cameraUIview.frame = CGRect(origin: CGPoint(x: 0, y: 0), size: CGSize(width: self.view.frame.width, height: self.view.frame.width / 9 * 16))
+        cameraUIview.frame = CGRect(origin: CGPoint(x: 0, y: 0), size: CGSize(width: self.view.frame.width, height: self.view.frame.width / 2 * 3))
         self.view.addSubview(cameraUIview)
         cameraUIview.translatesAutoresizingMaskIntoConstraints = false
         cameraUIview.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0).isActive = true
@@ -114,7 +116,7 @@ class CameraViewController: UIViewController{
         
         //シルエット表示用のviewを作成
         
-        silhouetteUIview.frame = CGRect(origin: CGPoint(x: 0, y: 0), size: CGSize(width: self.view.frame.width, height: self.view.frame.width / 9 * 16))
+        silhouetteUIview.frame = CGRect(origin: CGPoint(x: 0, y: 0), size: CGSize(width: self.view.frame.width, height: self.view.frame.width / 2 * 3))
         silhouetteUIview.image = UIImage(named: String(quest) + ".PNG")
         silhouetteUIview.alpha = (flag ? 0.5 : 0)
 //        silhouetteUIview.backgroundColor = .systemPink
@@ -123,17 +125,17 @@ class CameraViewController: UIViewController{
         silhouetteUIview.translatesAutoresizingMaskIntoConstraints = false
         silhouetteUIview.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0).isActive = true
         silhouetteUIview.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
-        silhouetteUIview.heightAnchor.constraint(equalToConstant: self.view.frame.width / 9 * 16).isActive = true
+        silhouetteUIview.heightAnchor.constraint(equalToConstant: self.view.frame.width / 2 * 3).isActive = true
         silhouetteUIview.widthAnchor.constraint(equalToConstant: self.view.frame.width ).isActive = true
         
         lazy var latticeUIview = UIImageView()
-        latticeUIview.frame = CGRect(origin: CGPoint(x: 0, y: 0), size: CGSize(width: self.view.frame.width, height: self.view.frame.width / 9 * 16))
+        latticeUIview.frame = CGRect(origin: CGPoint(x: 0, y: 0), size: CGSize(width: self.view.frame.width, height: self.view.frame.width / 2 * 3))
         latticeUIview.image = UIImage(named: "lattice.PNG")
         latticeUIview.contentMode = .scaleToFill
         self.view.addSubview(latticeUIview)
         latticeUIview.translatesAutoresizingMaskIntoConstraints = false
         latticeUIview.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0).isActive = true
-        latticeUIview.heightAnchor.constraint(equalToConstant: self.view.frame.width / 9 * 16).isActive = true
+        latticeUIview.heightAnchor.constraint(equalToConstant: self.view.frame.width / 2 * 3).isActive = true
         latticeUIview.widthAnchor.constraint(equalToConstant: self.view.frame.width).isActive = true
         latticeUIview.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
         
@@ -199,7 +201,7 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate{
         if let imageData = photo.fileDataRepresentation() {
             // Data型をUIImageオブジェクトに変換
             let uiImage = UIImage(data: imageData)!
-            uiImage.cgImage?.cropping(to: CGRect(origin: CGPoint(x: 0, y: 0), size: CGSize(width: self.view.frame.width, height: self.view.frame.width / 9 * 16)))
+            uiImage.cgImage?.cropping(to: CGRect(origin: CGPoint(x: 0, y: 0), size: CGSize(width: self.view.frame.width, height: self.view.frame.width / 2 * 3)))
 //            uiImage.size =  /*CGSize(width: self.view.frame.width, height: self.view.frame.width / 9 * 16)*/
             if let context = AppDelegate.shared.modelContext {
 
