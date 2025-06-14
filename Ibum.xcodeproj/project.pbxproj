@@ -412,11 +412,13 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = XGTSTJK547;
+				DEVELOPMENT_TEAM = 89QM95YN84;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Ibum/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "カメラを使用します";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "写真をフォルダに保存します";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "アプリに画像を追加します";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -428,7 +430,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "app.tanaka.a-ru.Ibum";
+				PRODUCT_BUNDLE_IDENTIFIER = "app.tanaka.a-ru.leaders.Ibum";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -443,11 +445,13 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = XGTSTJK547;
+				DEVELOPMENT_TEAM = 89QM95YN84;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Ibum/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "カメラを使用します";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "写真をフォルダに保存します";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "アプリに画像を追加します";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -459,7 +463,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "app.tanaka.a-ru.Ibum";
+				PRODUCT_BUNDLE_IDENTIFIER = "app.tanaka.a-ru.leaders.Ibum";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -473,11 +477,12 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = XGTSTJK547;
+				DEVELOPMENT_TEAM = 89QM95YN84;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "app.tanaka.a-ru.IbumTests";
+				PRODUCT_BUNDLE_IDENTIFIER = "app.tanaka.a-ru.leaders.IbumTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
@@ -492,11 +497,12 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = XGTSTJK547;
+				DEVELOPMENT_TEAM = 89QM95YN84;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "app.tanaka.a-ru.IbumTests";
+				PRODUCT_BUNDLE_IDENTIFIER = "app.tanaka.a-ru.leaders.IbumTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
@@ -510,10 +516,11 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = XGTSTJK547;
+				DEVELOPMENT_TEAM = 89QM95YN84;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "";
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "app.tanaka.a-ru.IbumUITests";
+				PRODUCT_BUNDLE_IDENTIFIER = "app.tanaka.a-ru.leaders.IbumUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
@@ -527,10 +534,11 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = XGTSTJK547;
+				DEVELOPMENT_TEAM = 89QM95YN84;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "";
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "app.tanaka.a-ru.IbumUITests";
+				PRODUCT_BUNDLE_IDENTIFIER = "app.tanaka.a-ru.leaders.IbumUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;

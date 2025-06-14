@@ -126,10 +126,6 @@ struct PhotoTrimmingView: View {
                                     .foregroundColor(.gray)
                                     .font(.title)
                                     .padding(.leading,20)
-//                            ZStack{
-//                                Circle()
-//                                Image(systemName: "")
-//                            }
                         }
                         Spacer()
                     }
