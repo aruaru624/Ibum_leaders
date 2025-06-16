@@ -39,8 +39,9 @@ struct AchivementGaugeStyle:GaugeStyle{
                 HStack(alignment: .center){
                     Text(String(Int(configuration.value * 100)))
                         .font(.system(size: 80, weight: .bold, design: .rounded))
-                        .foregroundColor(.gray)
+                        .foregroundColor(Color("graphColor"))
                     Text("%")
+                        .font(.system(size: 20, weight: .bold, design: .rounded))
                 }
             }.clipShape(Circle())
             
@@ -65,7 +66,9 @@ struct HomeView: View {
     @StateObject private var isPresentedCamera = isPresenteCamera()
     
     @State  var chosenQuestPhoto:Photo = Photo(saveDate: Date(), photoData: Data(), scale: 1, centerX: 1, centerY: 1, registerSns: [], best: false, questTitle: "", id: "")
-    @Query private var quests: [Quest]
+    
+    @Query(sort:[SortDescriptor(\Quest.rarityOrder, order: .reverse)]) private var quests: [Quest]
+    
     @State var flag = false
     @State var questTitle = ""
     @State var chooseQuest : Quest = Quest(
@@ -85,9 +88,14 @@ struct HomeView: View {
     @State private var showViewController = false
     @State private var showDetailView = false
     @State private var showThankView = false
+    @State private var showToSettingAlert = false
     
     @State var questSum:Int = 0
     @State var questClearSum:Int = 0
+    
+    @State private var selectionValue = 1
+    
+    @State private var questArray : [Quest] = []
     
     var body: some View {
         
@@ -98,7 +106,8 @@ struct HomeView: View {
                         VStack{
                             HStack(alignment: .center){
                                 Text("達成率")
-                                    .monospaced()
+//                                    .monospaced()
+                                    .fontDesign(.rounded)
                                     .font(.system(size: 30))
                                     .padding(.leading,30)
                                 ZStack(alignment: .center) {
@@ -123,8 +132,19 @@ struct HomeView: View {
                             }
                             .padding(10)
                             
+//                            HStack{
+//                                Text("クエスト一覧")
+//                                    .fontWeight(.heavy)
+//                                    .font(.system(size: 40))
+//                                    .foregroundStyle(Color(red: 7/255, green: 25/255, blue: 82/255))
+//                                    .padding(.leading,20)
+//                                Spacer()
+////                                Button(action:)
+//                            }
+                            
+                            
                             LazyVGrid(columns: columns,spacing:0){
-                                ForEach(quests,id:\.self){ quest in
+                                ForEach(questArray,id:\.self){ quest in
                                     
                                     ZStack{
                                         switch quest.rarity {
@@ -196,8 +216,17 @@ struct HomeView: View {
                                                 }
                                                 
                                                 Spacer()
-                                                Image(systemName: (quest.clear ? "star.fill" : "star"))
-                                                    .foregroundStyle(.white)
+                                                Image(systemName: (quest.favorite ? "star.fill" : "star"))
+                                                    .foregroundStyle(quest.favorite ? Color(red: 53/255, green: 162/255, blue: 159/255) : .white)
+                                                    .onTapGesture{
+                                                        quest.favorite.toggle()
+                                                        do{
+                                                            try context.save()
+//                                                            print("saved")
+                                                        }catch{
+                                                            print(error)
+                                                        }
+                                                    }
 
                                             }
                                             .padding(10)
@@ -222,6 +251,21 @@ struct HomeView: View {
                                                             bottomTrailingRadius: 0,
                                                             topTrailingRadius: 0,
                                                             style: .continuous))
+                                                }else{
+                                                    ZStack{
+                                                        Color.clear
+                                                            .aspectRatio(2/3, contentMode: .fit)
+                                                            .padding(10)
+                                                        Image(systemName: "camera")
+                                                            .resizable()
+                                                            .scaledToFit()
+                                                            .padding(10)
+                                                            .scaleEffect(0.4)
+                                                            .foregroundStyle(Color(red: 53/255, green: 162/255, blue: 159/255))
+                                                        
+                                                            
+                    
+                                                    }
                                                 }
                                             } else {
                                                 
@@ -275,6 +319,9 @@ struct HomeView: View {
                                         }
                                         .onTapGesture {
                                             let status = AVCaptureDevice.authorizationStatus(for: AVMediaType.video)
+                                            if  status == .denied{
+                                                showToSettingAlert.toggle()
+                                            }
                                             if status == AVAuthorizationStatus.authorized {
                                                 questTitle = quest.title
                                                 chooseQuest = quest
@@ -329,11 +376,33 @@ struct HomeView: View {
                             
                             questSum = quests.count
                             questClearSum = quests.filter { !$0.ids.isEmpty }.count
+                            
+                            questArray = quests
                         }
                         
                        
                     }
-                    
+//                    .toolbar{
+//                        ToolbarItem{
+//                            Menu {
+//                                Button("標準", action: {
+////                                    quests = FetchDescriptor<Quest>(
+////                                    questArray = quests
+////                                    questArray.sort(by: {$0.questTitle < $1.questTitle})
+//                                })
+//                                Button("お気に入り", action: {
+////                                    questArray = quests
+////                                    let arr = questArray.filter { $0.favorite == true}
+////                                    questArray = arr
+//                                })
+//                                Button("レア度順", action: {
+//                                    
+//                                })
+//                            } label: {
+//                                Label("", systemImage: "list.bullet")
+//                            }
+//                        }
+//                    }
                     .navigationTitle("クエスト一覧")
                     .navigationBarTitleDisplayMode(.large)
                     .navigationDestination(isPresented: $showViewController){
@@ -343,6 +412,15 @@ struct HomeView: View {
                     }
                     .sheet(isPresented:$showDetailView){
                         DetailView(photo: $chosenQuestPhoto,title:chosenQuestPhoto.questTitle)
+                    }
+                    .alert("カメラ使用不可",isPresented: $showToSettingAlert){
+                        Button("戻る"){}
+                        Button("設定へ"){
+                            
+                            UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
+                        }
+                    }message:{
+                        Text("カメラの使用を許可してください")
                     }
                     ZStack{
                         RoundedRectangle(cornerRadius: 10)
@@ -373,13 +451,16 @@ struct HomeView: View {
                             Text("撮影よろしくお願いします")
                                 .fontWeight(.semibold)
                                 .font(.system(size: 20))
+                                .foregroundStyle(.black)
                                 .padding(5)
                             Text("↓のシルエットに当てはめて撮影")
+                                .foregroundStyle(.black)
 //                            Text(chooseQuest.recommendedLocation)
                             if let image = UIImage(named: String(chooseQuest.title)){
                                 Image(uiImage:image)
                                     .resizable()
                                     .scaledToFit()
+                                    .clipShape(RoundedRectangle(cornerRadius: 10))
                                     .overlay{
                                         RoundedRectangle(cornerRadius: 10)
                                             .stroke(.gray,lineWidth: 2)

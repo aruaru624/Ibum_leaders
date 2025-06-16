@@ -20,11 +20,22 @@ enum TagSet: String, CaseIterable, Codable {
     case oshare = "おしゃれ"
 }
 
-enum rarity: String,  CaseIterable, Codable {
-    case common     // 通常
-    case rare       // ちょっと特別
-    case epic       // かなり映える
-    case legendary  // 超映える、主役級
+enum rarity: String,  CaseIterable, Codable,Comparable{
+
+    case common  = "a"   // 通常
+    case rare = "b"  // ちょっと特別
+    case epic   = "c"    // かなり映える
+    case legendary  = "d" // 超映える、主役級
+    
+    // Comparableに準拠すると、この関数を定義しなければならない（定義することで大小比較が可能になる）
+    static func < (lhs: rarity, rhs: rarity) -> Bool {
+        return lhs.rawValue < rhs.rawValue
+    }
+    
+    var order: Int {
+            // CaseIterableに準拠すると、allCasesで全caseの配列を取得できる
+            return rarity.allCases.firstIndex(of: self) ?? 0
+    }
     
 }
 

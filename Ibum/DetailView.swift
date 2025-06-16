@@ -22,6 +22,8 @@ struct DetailView: View {
     
     @State var isShowAlert = false
     @State var isShowSavedAlert = false
+    @State var showToSettingAlert = false
+    @State var phtoSavedAlert = false
     
 
     var body: some View {
@@ -61,69 +63,99 @@ struct DetailView: View {
 //                            .padding(.bottom, 50)
                             
                         }
-                Grid {
-                    GridRow {
-                        Image("discord")
-                            .resizable()
-                            .frame(width: 50,height: 50)
-                            .scaledToFit()
-                            .clipShape(Circle())
-                            .contentMargins(20)
-                            .padding()
-                        Image("instagram")
-                            .resizable()
-                            .frame(width: 50,height: 50)
-                            .scaledToFit()
-                            .clipShape(Circle())
-                            .contentMargins(20)
-                            .padding()
-                        Image("line")
-                            .resizable()
-                            .frame(width: 50,height: 50)
-                            .scaledToFit()
-                            .clipShape(Circle())
-                            .contentMargins(20)
-                            .padding()
-                        Image("snapchat")
-                            .resizable()
-                            .frame(width: 50,height: 50)
-                            .scaledToFit()
-                            .clipShape(Circle())
-                            .contentMargins(20)
-                            .padding()
-                    }
-                    GridRow {
-                        Image("tiktok")
-                            .resizable()
-                            .frame(width: 50,height: 50)
-                            .scaledToFit()
-                            .clipShape(Circle())
-                            .contentMargins(20)
-                            .padding()
-                        Image("google")
-                            .resizable()
-                            .frame(width: 50,height: 50)
-                            .scaledToFit()
-                            .clipShape(Circle())
-                            .contentMargins(20)
-                            .padding()
-                        Image("facebook")
-                            .resizable()
-                            .frame(width: 50,height: 50)
-                            .scaledToFit()
-                            .clipShape(Circle())
-                            .contentMargins(20)
-                            .padding()
-                        Image("x")
-                            .resizable()
-                            .frame(width: 50,height: 50)
-                            .scaledToFit()
-                            .clipShape(Circle())
-                            .contentMargins(20)
-                            .padding()
-                        
-                    }
-                }
+                Spacer()
+//                Text("タグ")
+//                HStack{
+//                    ForEach(<#T##data: Range<Int>##Range<Int>#>, content: <#T##(Int) -> View#>)
+//                }
+//                Grid {
+//                    GridRow {
+//                        Image("discord")
+//                            .resizable()
+//                            .frame(width: 50,height: 50)
+//                            .scaledToFit()
+//                            .scaleEffect(0.7)
+//
+//                            .clipShape(Circle())
+//                            .contentMargins(20)
+//                            .padding()
+//                            .onTapGesture {
+//                                var flag = false
+//                                ForEach(photo.registerSns, id: \.self){ sns in
+//                                    if sns == "discord"{
+//                                        flag = true
+//                                    }
+//                                }
+//                                if flag {
+//                                    
+//                                }else{
+//                                    photo.registerSns.append("discord")
+//                                }
+//                                
+//                            }
+//                        Image("instagram")
+//                            .resizable()
+//                            .frame(width: 50,height: 50)
+//                            .scaledToFit()
+//                            .scaleEffect(0.7)
+//
+//                            .clipShape(Circle())
+//                            .contentMargins(20)
+//                            .padding()
+//                        Image("line")
+//                            .resizable()
+//                            .frame(width: 50,height: 50)
+//                            .scaledToFit()
+//                            .scaleEffect(0.7)
+//
+//                            .clipShape(Circle())
+//                            .contentMargins(20)
+//                            .padding()
+//                        Image("snapchat")
+//                            .resizable()
+//                            .frame(width: 50,height: 50)
+//                            .scaledToFit()
+//                            .scaleEffect(0.7)
+//                            .clipShape(Circle())
+//                            .contentMargins(20)
+//                            .padding()
+//                    }
+//                    GridRow {
+//                        Image("tiktok")
+//                            .resizable()
+//                            .frame(width: 50,height: 50)
+//                            .scaledToFit()
+//                            .scaleEffect(0.7)
+//                            .clipShape(Circle())
+//                            .contentMargins(20)
+//                            .padding()
+//                        Image("google")
+//                            .resizable()
+//                            .frame(width: 50,height: 50)
+//                            .scaledToFit()
+//                            .scaleEffect(0.7)
+//                            .clipShape(Circle())
+//                            .contentMargins(20)
+//                            .padding()
+//                        Image("facebook")
+//                            .resizable()
+//                            .frame(width: 50,height: 50)
+//                            .scaledToFit()
+//                            .scaleEffect(0.7)
+//                            .clipShape(Circle())
+//                            .contentMargins(20)
+//                            .padding()
+//                        Image("x")
+//                            .resizable()
+//                            .frame(width: 50,height: 50)
+//                            .scaledToFit()
+//                            .scaleEffect(0.7)
+//                            .clipShape(Circle())
+//                            .contentMargins(20)
+//                            .padding()
+//                        
+//                    }
+//                }
                 HStack{
                     
                     Button(action:{
@@ -149,11 +181,29 @@ struct DetailView: View {
                         // アラートのメッセージ...
                         Text("データの削除を実行しますか？")
                     }
+                    .alert("保存不可",isPresented: $showToSettingAlert){
+                        Button("戻る"){}
+                        Button("設定へ"){
+                            
+                            UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
+                        }
+                    }message:{
+                        Text("フォトへのフルアクセスを許可してください")
+                    }
+                    .alert("保存完了",isPresented: $phtoSavedAlert){
+                        Button("戻る"){}
+                    }message:{
+                        Text("画像が本体に保存されました")
+                    }
                   Spacer()
                     Button(action: {
                         let status = PHPhotoLibrary.authorizationStatus(for: .readWrite)
+                        if  status == .limited || status == .denied {
+                            showToSettingAlert.toggle()
+                        }
                         if status == .authorized{
                             UIImageWriteToSavedPhotosAlbum(UIImage(data: photo.photoData)!, nil,nil,nil)
+                            phtoSavedAlert.toggle()
                         }else{
                             Task{
                                 await PHPhotoLibrary.requestAuthorization(for: .readWrite)

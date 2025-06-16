@@ -17,7 +17,13 @@ final class Quest {
     var explation: String
     var recommendedPoses: [String]
     var recommendedLocation: String
-    var rarity: rarity  // ⭐️ 追加
+    var rarity: rarity {
+            didSet {
+                rarityOrder = rarity.order
+            }
+        }
+        var rarityOrder: Int
+    
 
     init(
         title: String,
@@ -39,6 +45,7 @@ final class Quest {
         self.recommendedPoses = recommendedPoses
         self.recommendedLocation = recommendedLocation
         self.rarity = rarity
+        self.rarityOrder = rarity.order
     }
 }
 

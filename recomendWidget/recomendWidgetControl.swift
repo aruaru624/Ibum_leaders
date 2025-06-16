@@ -28,7 +28,6 @@ struct recomendWidgetControl: ControlWidget {
         .displayName("オススメポーズ")
         .description("ポーズを参考にして写真を撮ろう！")
         
-//        .supportedFamilies([.systemMedium])
     }
 }
 
@@ -76,4 +75,27 @@ struct StartTimerIntent: SetValueIntent {
         // Start the timer…
         return .result()
     }
+}
+
+//struct Provider: TimelineProvider {
+//    func placeholder(in context: Context) -> Entry {
+//        Entry(date: Date(), isRunning: false, name: "Timer")
+//    }
+//
+//    func getSnapshot(in context: Context, completion: @escaping (Entry) -> Void) {
+//        let entry = Entry(date: Date(), isRunning: true, name: "Snapshot")
+//        completion(entry)
+//    }
+//
+//    func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) -> Void) {
+//        let entry = Entry(date: Date(), isRunning: true, name: "From Timeline")
+//        let timeline = Timeline(entries: [entry], policy: .never)
+//        completion(timeline)
+//    }
+//}
+
+struct Entry: TimelineEntry {
+    let date: Date
+    let isRunning: Bool
+    let name: String
 }

@@ -13,6 +13,6 @@ struct recomendWidgetBundle: WidgetBundle {
     var body: some Widget {
         recomendWidget()
         recomendWidgetControl()
-        recomendWidgetLiveActivity()
+//        recomendWidgetLiveActivity()
     }
 }

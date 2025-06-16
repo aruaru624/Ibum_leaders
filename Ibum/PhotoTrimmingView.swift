@@ -238,7 +238,7 @@ struct PhotoTrimmingView: View {
         //        dismiss()
                 onDismiss()
             }){
-                Text("終　了")
+                Text("終 了")
                     .frame(width: width / 2 ,height: 50)
                     .font(.system(size: 30))
                     .fontWeight(.semibold)
