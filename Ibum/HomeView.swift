@@ -36,6 +36,9 @@ struct AchivementGaugeStyle:GaugeStyle{
                                 .fill(Color(red: 53/255, green: 162/255, blue: 159/255))
                             }
                         }
+                VStack{
+                    
+                }
                 HStack(alignment: .center){
                     Text(String(Int(configuration.value * 100)))
                         .font(.system(size: 80, weight: .bold, design: .rounded))
@@ -105,11 +108,7 @@ struct HomeView: View {
                     ScrollView(.vertical){
                         VStack{
                             HStack(alignment: .center){
-                                Text("達成率")
-//                                    .monospaced()
-                                    .fontDesign(.rounded)
-                                    .font(.system(size: 30))
-                                    .padding(.leading,30)
+                            
                                 ZStack(alignment: .center) {
                                     Gauge(value: questSum > 0 ? Double(questClearSum) / Double(questSum) : 0, in: 0 ... 1){}
                                         .gaugeStyle(AchivementGaugeStyle(questCount: questClearSum, questClearCount: questSum))
