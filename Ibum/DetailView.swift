@@ -32,7 +32,7 @@ struct DetailView: View {
                 Image(uiImage: UIImage(data: photo.photoData)!)
                     .resizable()
                     .scaleEffect(scale * 2)
-                    .frame(width: width)
+//                    .frame(width: width)
                     .scaledToFit()
                     .position(CGPoint(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height / 4))
                     .opacity(0.5)
@@ -53,13 +53,16 @@ struct DetailView: View {
                 Image(uiImage: UIImage(data: photo.photoData)!)
                     .resizable()
                     .scaleEffect(scale)
-                    .frame(width: width)
+//                    .frame(width: width)
                     .clipShape(Circle())
+                    .padding([.leading,.trailing],50)
+                    .scaledToFit()
 //                    .padding(.bottom, 50)
                     .overlay() {
                           Circle()
                             .stroke(.white, lineWidth: 10)
-                            .frame(width: width)
+                            .padding([.leading,.trailing],50)
+//                            .frame(width: width)
 //                            .padding(.bottom, 50)
                             
                         }

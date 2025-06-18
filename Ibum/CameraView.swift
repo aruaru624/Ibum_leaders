@@ -144,7 +144,7 @@ class CameraViewController: UIViewController{
         //toggleボタンを作成
         lazy var toggle = UISwitch()
         toggle.isOn = true
-        toggle.onTintColor = .init(red: 151/255, green: 254/255, blue: 237/255, alpha: 1)
+        toggle.onTintColor = .init(red: 53/255, green: 162/255, blue: 159/255, alpha: 1)
         self.view.addSubview(toggle)
         toggle.translatesAutoresizingMaskIntoConstraints = false
         toggle.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10).isActive = true

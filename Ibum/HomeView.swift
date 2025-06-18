@@ -37,15 +37,19 @@ struct AchivementGaugeStyle:GaugeStyle{
                             }
                         }
                 VStack{
-                    
+                    Text("達成度")
+                        .font(.system(size: 20))
+                        .foregroundStyle(.gray)
+                        .padding(.top,10)
+                    HStack(alignment: .center){
+                        Text(String(Int(configuration.value * 100)))
+                            .font(.system(size: 80, weight: .bold, design: .rounded))
+                            .foregroundColor(Color("graphColor"))
+                        Text("%")
+                            .font(.system(size: 30, weight: .bold, design: .rounded))
+                    }
                 }
-                HStack(alignment: .center){
-                    Text(String(Int(configuration.value * 100)))
-                        .font(.system(size: 80, weight: .bold, design: .rounded))
-                        .foregroundColor(Color("graphColor"))
-                    Text("%")
-                        .font(.system(size: 20, weight: .bold, design: .rounded))
-                }
+                
             }.clipShape(Circle())
             
         }
@@ -121,7 +125,7 @@ struct HomeView: View {
 //                                                .border(.gray.opacity(0.4),width:10)
                                                 .frame(idealWidth:200,idealHeight:200)
                                                 
-                                                .shadow(radius: 3)
+                                                .shadow(radius: 2)
 //                                                .padding(5)
                                         }
                                         
@@ -146,53 +150,6 @@ struct HomeView: View {
                                 ForEach(questArray,id:\.self){ quest in
                                     
                                     ZStack{
-                                        switch quest.rarity {
-                                        case .common:
-                                            UnevenRoundedRectangle(
-                                                topLeadingRadius: 0,
-                                                bottomLeadingRadius: 0,
-                                                bottomTrailingRadius: 0,
-                                                topTrailingRadius: 15,
-                                                style: .continuous)
-                                            .fill(.blue)
-                                            .offset(x:5,y:5)
-                                        case .rare:
-                                            UnevenRoundedRectangle(
-                                                topLeadingRadius: 0,
-                                                bottomLeadingRadius: 0,
-                                                bottomTrailingRadius: 0,
-                                                topTrailingRadius: 15,
-                                                style: .continuous)
-                                            .fill(.green)
-                                            .offset(x:5,y:5)
-                                        case .epic:
-                                            UnevenRoundedRectangle(
-                                                topLeadingRadius: 0,
-                                                bottomLeadingRadius: 0,
-                                                bottomTrailingRadius: 0,
-                                                topTrailingRadius: 15,
-                                                style: .continuous)
-                                            .fill(.purple)
-                                            .offset(x:5,y:5)
-                                        case .legendary:
-                                            UnevenRoundedRectangle(
-                                                topLeadingRadius: 0,
-                                                bottomLeadingRadius: 0,
-                                                bottomTrailingRadius: 0,
-                                                topTrailingRadius: 15,
-                                                style: .continuous)
-                                            .fill(.orange)
-                                            .offset(x:5,y:5)
-                                        default:
-                                            UnevenRoundedRectangle(
-                                                topLeadingRadius: 0,
-                                                bottomLeadingRadius: 0,
-                                                bottomTrailingRadius: 0,
-                                                topTrailingRadius: 15,
-                                                style: .continuous)
-                                            .fill(.gray)
-                                            .offset(x:5,y:5)
-                                        }
                                             
                                         UnevenRoundedRectangle(
                                           topLeadingRadius: 0,
@@ -200,7 +157,11 @@ struct HomeView: View {
                                           bottomTrailingRadius: 0,
                                           topTrailingRadius: 15,
                                           style: .continuous)
-                                        .fill(Color(red: 31/255, green: 37/255, blue: 54/255))
+                                        .fill(Color(red: 156/255, green: 219/255, blue: 211/255))
+//                                        .fill(.white)
+//                                        .stroke(Color("myTectColor"),lineWidth: 2)
+                                        .shadow(color:Color("myTectColor").opacity(0.8),radius: 2)
+                                    
 //                                            .shadow(radius: 2)
                                         
                                         VStack{
@@ -211,12 +172,13 @@ struct HomeView: View {
                                                     Text("#" + String(tag.rawValue))
                                                         .fontWeight(.light)
                                                         .font(.system(size: 10))
-                                                        .foregroundStyle(.white)
+                                                        .foregroundStyle(Color("myTectColor"))
+                                                    
                                                 }
                                                 
                                                 Spacer()
                                                 Image(systemName: (quest.favorite ? "star.fill" : "star"))
-                                                    .foregroundStyle(quest.favorite ? Color(red: 53/255, green: 162/255, blue: 159/255) : .white)
+                                                    .foregroundStyle(quest.favorite ? Color(red: 53/255, green: 162/255, blue: 159/255) : Color("myTectColor"))
                                                     .onTapGesture{
                                                         quest.favorite.toggle()
                                                         do{
@@ -228,37 +190,47 @@ struct HomeView: View {
                                                     }
 
                                             }
-                                            .padding(10)
+                                            .padding(2)
                                             
-                                            Text(String(quest.title))
-                                                .fontWeight(.semibold)
-                                                .font(.system(size: 20))
-                                                .foregroundStyle(.white)
+                                            HStack{
+                                                Text(String(quest.title))
+                                                    .fontWeight(.semibold)
+                                                    .font(.system(size: 15))
+                                                    .foregroundStyle(Color("myTectColor"))
+                                                Spacer()
+                                            }.padding(.leading,5)
+                                            
 
-    //                                            .padding([.top],10)
+    //
                                             if let idd = quest.ids.first{
                                                 let descriptor = FetchDescriptor<Photo>(predicate: #Predicate<Photo>{$0.id == idd})
                                                 if let currentPhoto = try! context.fetch(descriptor).first as? Photo,
                                                    let uiImage = UIImage(data: currentPhoto.photoData) {
+                                                    ZStack{
+                                                        Color.white
+                                                            .aspectRatio(2/3, contentMode: .fit)
+//                                                            .padding(5)
+                                                        Color(red: 200/255, green:200/255, blue: 200/255)
+                                                            .aspectRatio(2/3, contentMode: .fit)
+                                                            .padding(5)
+                                                            .opacity(1.0)
+                                                            .border(Color(red: 200/255, green:200/255, blue: 200/255), width: 1)
                                                     Image(uiImage: uiImage)
-                                                        .resizable()
-                                                        .aspectRatio(2/3, contentMode: .fill)
-                                                        .padding(10)
-                                                        .clipShape(UnevenRoundedRectangle(
-                                                            topLeadingRadius: 0,
-                                                            bottomLeadingRadius: 15,
-                                                            bottomTrailingRadius: 0,
-                                                            topTrailingRadius: 0,
-                                                            style: .continuous))
+                                                            .resizable()
+                                                            .aspectRatio(2/3, contentMode: .fill)
+                                                            .padding(5)
+//                                                            .opacity(1.0)
+                                                    }.padding(5)
+                                                    
                                                 }else{
                                                     ZStack{
                                                         Color.clear
                                                             .aspectRatio(2/3, contentMode: .fit)
-                                                            .padding(10)
+                                                            .padding([.leading,.trailing],5)
                                                         Image(systemName: "camera")
                                                             .resizable()
                                                             .scaledToFit()
-                                                            .padding(10)
+//                                                            .padding(10)
                                                             .scaleEffect(0.4)
                                                             .foregroundStyle(Color(red: 53/255, green: 162/255, blue: 159/255))
                                                         
@@ -272,42 +244,48 @@ struct HomeView: View {
                                                     ZStack{
                                                         Color.white
                                                             .aspectRatio(2/3, contentMode: .fit)
-                                                            .padding(10)
+//                                                            .padding(5)
+                                                        Color(red: 200/255, green:200/255, blue: 200/255)
+                                                            .aspectRatio(2/3, contentMode: .fit)
+                                                            .padding(5)
+                                                            .opacity(1.0)
+                                                            .border(Color(red: 200/255, green:200/255, blue: 200/255), width: 1)
                                                         Image(uiImage:image)
                                                             .resizable()
                                                             .aspectRatio(2/3, contentMode: .fill)
-                                                            .padding(10)
+//                                                            .padding([.leading,.trailing],5)
                                                             .clipShape(UnevenRoundedRectangle(
                                                                 topLeadingRadius: 0,
                                                                 bottomLeadingRadius: 15,
                                                                 bottomTrailingRadius: 0,
                                                                 topTrailingRadius: 0,
                                                                 style: .continuous))
-                                                        Image(systemName: "camera")
-                                                            .resizable()
-                                                            .scaledToFit()
-                                                            .padding(10)
-                                                            .scaleEffect(0.4)
-                                                            .foregroundStyle(Color(red: 53/255, green: 162/255, blue: 159/255))
+                                                            .padding(5)
+                                                            .colorInvert()
+                                                            
                                                     }
+                                                    .padding(5)
                                                     
                                                       
                                                     
                                                 }else{
                                                     ZStack{
-                                                        Color.clear
+                                                        Color(red: 200/255, green:200/255, blue: 200/255)
                                                             .aspectRatio(2/3, contentMode: .fit)
-                                                            .padding(10)
+                                                            .padding([.leading,.trailing],5)
+                                                            .opacity(1.0)
+                                                            .border(Color(red: 200/255, green:200/255, blue: 200/255), width: 1)
                                                         Image(systemName: "camera")
                                                             .resizable()
                                                             .scaledToFit()
-                                                            .padding(10)
+                                                            .padding([.leading,.trailing],5)
                                                             .scaleEffect(0.4)
                                                             .foregroundStyle(Color(red: 53/255, green: 162/255, blue: 159/255))
                                                         
                                                             
                                                             
                                                     }
+                                                    .padding(5)
                                                     
                                                     
                                                     
@@ -315,6 +293,83 @@ struct HomeView: View {
                                                 
                                                 
                                             }
+                                            HStack{
+                                                
+                                                switch quest.rarity{
+                                                case .common:
+                                                    ZStack{
+                                                        RoundedRectangle(cornerRadius: 10)
+                                                            .foregroundStyle(.blue)
+//                                                            .padding(5)
+                                                        Text("レア度：コモン")
+                                                            .font(.system(size:10))
+                                                            .foregroundStyle(.white)
+                                                        //                                                        .backgroundStyle(.blue)
+//                                                            .background(.blue)
+                                                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                                                            .padding(1)
+                                                    }
+                                                    
+//                                                    .fill(.blue)
+//
+                                                case .rare:
+                                                    ZStack{
+                                                        RoundedRectangle(cornerRadius: 10)
+                                                            .foregroundStyle(.green)
+//                                                            .padding(5)
+                                                        Text("レア度：レア")
+                                                            .font(.system(size:10))
+                                                            .foregroundStyle(Color("myTectColor"))
+                                                        //                                                        .backgroundStyle(.blue)
+//                                                            .background(.blue)
+                                                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                                                            .padding(1)
+                                                    }
+                                                
+                                                
+                                                case .epic:
+                                                    ZStack{
+                                                        RoundedRectangle(cornerRadius: 10)
+                                                            .foregroundStyle(.purple)
+//                                                            .padding(5)
+                                                        Text("レア度：エピック")
+                                                            .font(.system(size:10))
+                                                            .foregroundStyle(Color("myTectColor"))
+                                                        //                                                        .backgroundStyle(.blue)
+//                                                            .background(.blue)
+                                                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                                                            .padding(1)
+                                                    }
+                                                case .legendary:
+                                                    ZStack{
+                                                        RoundedRectangle(cornerRadius: 10)
+                                                            .foregroundStyle(.orange)
+//                                                            .padding(5)
+                                                        Text("レア度：レジェンド")
+                                                            .font(.system(size:10))
+                                                            .foregroundStyle(Color("myTectColor"))
+                                                        //                                                        .backgroundStyle(.blue)
+//                                                            .background(.blue)
+                                                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                                                            .padding(1)
+//                                                            .padding([.bottom,.trailing],3)
+                                                    }
+                                                default:
+                                                    ZStack{
+                                                        RoundedRectangle(cornerRadius: 10)
+                                                            .foregroundStyle(.gray)
+//                                                            .padding(5)
+                                                        Text("レア度：なし")
+                                                            .font(.system(size:10))
+                                                            .foregroundStyle(Color("myTectColor"))
+                                                        //                                                        .backgroundStyle(.blue)
+//                                                            .background(.blue)
+                                                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                                                            .padding(1)
+                                                    }
+                                                }
+                                            }.padding(.leading,50)
+                                                .padding([.bottom,.trailing],2)
                                         }
                                         .onTapGesture {
                                             let status = AVCaptureDevice.authorizationStatus(for: AVMediaType.video)
@@ -422,9 +477,15 @@ struct HomeView: View {
                         Text("カメラの使用を許可してください")
                     }
                     ZStack{
+                        Rectangle()
+                            .fill(.black)
+                            .opacity(0.7)
+                            .ignoresSafeArea()
+//                            .opacity(flag ? 1 : 0)
                         RoundedRectangle(cornerRadius: 10)
                             .padding(40)
                             .foregroundStyle(.white)
+                        
 //                            .background(.white)
                         VStack{
                             HStack{
@@ -442,11 +503,6 @@ struct HomeView: View {
                                 }
                                 Spacer()
                             }
-                            Image("Thanks")
-                                .resizable()
-                                .scaledToFit()
-                                .padding([.leading,.trailing],80)
-                        
                             Text("撮影よろしくお願いします")
                                 .fontWeight(.semibold)
                                 .font(.system(size: 20))

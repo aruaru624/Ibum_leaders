@@ -120,6 +120,7 @@ struct PhotoTrimmingView: View {
                             .background(Color(red: 53/255, green: 162/255, blue: 159/255))
                             .clipped()
                             .cornerRadius(10)
+                            .opacity(flag ? 0 : 1)
                     }
                     .padding(.top,height / 5 * 4)
                     
@@ -189,26 +190,32 @@ struct PhotoTrimmingView: View {
                 .shadow(radius: 3)
             VStack{
                 Text("ナイスフォト👍")
-                    .padding(.top,height / 20)
+//                    .padding(.top,height / 20)
+                    .padding(.top,10)
                     .fontWeight(.semibold)
                     .font(.system(size: 30))
                     .foregroundStyle(.black)
-                Text(questTitle)
+                Text("クエスト：" + questTitle)
                     .padding(.top,5)
                     .fontWeight(.semibold)
                     .font(.system(size: 20))
                     .foregroundStyle(.black)
                 Image(uiImage: image)
+                    
                     .resizable()
-                    .frame(height: height / 3)
+//                    .frame(height: height / 3)
+                    .aspectRatio(2/3, contentMode: .fit)
 //                    .position(x: position.x, y: position.y)
                     .scaledToFit()
                     .clipShape(RoundedRectangle(cornerRadius: 10))
+                    .padding(10)
                     .overlay() {
                         RoundedRectangle(cornerRadius: 10)
                             .stroke(LinearGradient(gradient: Gradient(colors: [Color(red: 151/255, green: 254/255, blue: 237/255),Color(red: 53/255, green: 162/255, blue: 159/255)]),startPoint: .top, endPoint: .bottom),
                                     lineWidth: 2)
-                            .frame(height: height / 3)
+                            .aspectRatio(2/3, contentMode: .fit)
+//                            .frame(height: height / 3)
+                            .padding(10)
 //                            .padding(.bottom, 50)
                         
                     }
@@ -229,25 +236,26 @@ struct PhotoTrimmingView: View {
 //                    .font(.system(size: 20))
 //                    .foregroundStyle(.black)
 
-                
+                Button(action: {
+                    dismissToRoot()
+            //        dismiss()
+                    onDismiss()
+                }){
+                    Text("終 了")
+                        .frame(width: width / 2 ,height: 40)
+                        .font(.system(size: 20))
+                        .fontWeight(.semibold)
+                        .foregroundStyle(.white)
+                        .background(Color(red: 53/255, green: 162/255, blue: 159/255))
+                        .clipped()
+                        .cornerRadius(10)
+                        .padding(.bottom,5)
+                }
                 
             }
             .frame(width: width / 3 * 2,height: height / 2)
-            Button(action: {
-                dismissToRoot()
-        //        dismiss()
-                onDismiss()
-            }){
-                Text("終 了")
-                    .frame(width: width / 2 ,height: 50)
-                    .font(.system(size: 30))
-                    .fontWeight(.semibold)
-                    .foregroundStyle(.white)
-                    .background(Color(red: 53/255, green: 162/255, blue: 159/255))
-                    .clipped()
-                    .cornerRadius(10)
-            }
-            .padding(.top,height / 5 * 4)
+            
+//            .padding(.top,height / 5 * 4)
             
         }
     }
