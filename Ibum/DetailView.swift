@@ -62,6 +62,7 @@ struct DetailView: View {
                           Circle()
                             .stroke(.white, lineWidth: 10)
                             .padding([.leading,.trailing],50)
+//                            .frame(width: 80,height:80)
 //                            .frame(width: width)
 //                            .padding(.bottom, 50)
                             
@@ -165,9 +166,11 @@ struct DetailView: View {
                         isShowAlert.toggle()
                     }){
                         Image(systemName: "trash")
+                            .resizable()
+                            .scaledToFit()
                             .foregroundStyle(.red)
                             .padding()
-                            .frame(width: 60,height: 60)
+                            .frame(width: 60,height:60)
                     }.alert("確認", isPresented: $isShowAlert) {
                         // ダイアログ内で行うアクション処理...
                         Button("戻る",role: .cancel){}
@@ -215,8 +218,11 @@ struct DetailView: View {
                         }
                     }){
                         Image(systemName:"square.and.arrow.down")
+                            .resizable()
+                            .scaledToFit()
+                            .foregroundStyle(.blue)
                             .padding()
-                            .frame(width: 60,height: 60)
+                            .frame(width: 60,height:60)
                         
                     }
                 

@@ -90,7 +90,7 @@ struct HomeView: View {
         rarity: .common
     )
     
-    let columns = [GridItem(.flexible(),spacing: 0), GridItem(.flexible(),spacing: 0)]
+    let columns = [GridItem(.flexible(),spacing: 10), GridItem(.flexible(),spacing: 10)]
     
     @State private var showViewController = false
     @State private var showDetailView = false
@@ -133,7 +133,8 @@ struct HomeView: View {
                                     
                                 }
                             }
-                            .padding(10)
+                            .padding(.bottom,10)
+//                            .padding(10)
                             
 //                            HStack{
 //                                Text("クエスト一覧")
@@ -146,7 +147,7 @@ struct HomeView: View {
 //                            }
                             
                             
-                            LazyVGrid(columns: columns,spacing:0){
+                            LazyVGrid(columns: columns,spacing:10){
                                 ForEach(questArray,id:\.self){ quest in
                                     
                                     ZStack{
@@ -171,7 +172,7 @@ struct HomeView: View {
                                                 ForEach(quest.tags,id:\.self){tag in
                                                     Text("#" + String(tag.rawValue))
                                                         .fontWeight(.light)
-                                                        .font(.system(size: 10))
+                                                        .font(.system(size: 12))
                                                         .foregroundStyle(Color("myTectColor"))
                                                     
                                                 }
@@ -188,9 +189,11 @@ struct HomeView: View {
                                                             print(error)
                                                         }
                                                     }
+                                                    .padding(.top,2.5)
 
                                             }
-                                            .padding(2)
+//                                            .padding(2)
+                                            .padding([.trailing,.leading],5)
                                             
                                             HStack{
                                                 Text(String(quest.title))
@@ -220,23 +223,25 @@ struct HomeView: View {
                                                             .aspectRatio(2/3, contentMode: .fill)
                                                             .padding(5)
 //                                                            .opacity(1.0)
-                                                    }.padding(5)
+                                                    }.padding([.bottom,.leading,.trailing],5)
                                                     
                                                 }else{
                                                     ZStack{
-                                                        Color.clear
+                                                        Color(red: 200/255, green:200/255, blue: 200/255)
                                                             .aspectRatio(2/3, contentMode: .fit)
                                                             .padding([.leading,.trailing],5)
+                                                            .opacity(1.0)
+                                                            .border(Color(red: 200/255, green:200/255, blue: 200/255), width: 1)
                                                         Image(systemName: "camera")
                                                             .resizable()
                                                             .scaledToFit()
-//                                                            .padding(10)
+                                                            .padding([.leading,.trailing],5)
                                                             .scaleEffect(0.4)
                                                             .foregroundStyle(Color(red: 53/255, green: 162/255, blue: 159/255))
                                                         
                                                             
                     
-                                                    }
+                                                    }.padding([.bottom,.leading,.trailing],5)
                                                 }
                                             } else {
                                                 
@@ -264,7 +269,7 @@ struct HomeView: View {
                                                             .colorInvert()
                                                             
                                                     }
-                                                    .padding(5)
+                                                    .padding([.bottom,.leading,.trailing],5)
                                                     
                                                       
                                                     
@@ -285,7 +290,7 @@ struct HomeView: View {
                                                             
                                                             
                                                     }
-                                                    .padding(5)
+                                                    .padding([.bottom,.leading,.trailing],5)
                                                     
                                                     
                                                     
@@ -301,13 +306,25 @@ struct HomeView: View {
                                                         RoundedRectangle(cornerRadius: 10)
                                                             .foregroundStyle(.blue)
 //                                                            .padding(5)
-                                                        Text("レア度：コモン")
-                                                            .font(.system(size:10))
-                                                            .foregroundStyle(.white)
+//                                                        Text("レア度：コモン")
+//                                                            .font(.system(size:10))
+//                                                            .foregroundStyle(.white)
                                                         //                                                        .backgroundStyle(.blue)
 //                                                            .background(.blue)
-                                                            .clipShape(RoundedRectangle(cornerRadius: 10))
-                                                            .padding(1)
+//                                                            .clipShape(RoundedRectangle(cornerRadius: 10))
+//                                                            .padding(1)
+                                                        HStack(spacing: 0) { // spacingを0に設定
+                                                                    Image(systemName: "sparkles") // SF Symbol
+                                                                        .font(.caption) // フォントサイズを調整してテキストに合わせる
+                                                                        .foregroundColor(.yellow)
+                                                            Text("コモン")
+                                                                .font(.system(size:12))
+                                                                .foregroundStyle(Color("myTectColor"))
+                                                            //                                                        .backgroundStyle(.blue)
+    //                                                            .background(.blue)
+                                                                .clipShape(RoundedRectangle(cornerRadius: 10))
+                                                                .padding(1)
+                                                                }
                                                     }
                                                     
 //                                                    .fill(.blue)
@@ -317,13 +334,26 @@ struct HomeView: View {
                                                         RoundedRectangle(cornerRadius: 10)
                                                             .foregroundStyle(.green)
 //                                                            .padding(5)
-                                                        Text("レア度：レア")
-                                                            .font(.system(size:10))
-                                                            .foregroundStyle(Color("myTectColor"))
-                                                        //                                                        .backgroundStyle(.blue)
-//                                                            .background(.blue)
-                                                            .clipShape(RoundedRectangle(cornerRadius: 10))
-                                                            .padding(1)
+//                                                        Text("レア度：レア")
+//                                                            .font(.system(size:10))
+//                                                            .foregroundStyle(Color("myTectColor"))
+//                                                        //                                                        .backgroundStyle(.blue)
+////                                                            .background(.blue)
+//                                                            .clipShape(RoundedRectangle(cornerRadius: 10))
+//                                                            .padding(1)
+                                                        HStack(spacing: 0) { // spacingを0に設定
+                                                                    Image(systemName: "sparkles") // SF Symbol
+                                                                        .font(.caption) // フォントサイズを調整してテキストに合わせる
+                                                                        .foregroundColor(.yellow)
+                                                            Text("レア")
+                                                                .font(.system(size:12))
+                                                                .foregroundStyle(Color("myTectColor"))
+                                                            //                                                        .backgroundStyle(.blue)
+    //                                                            .background(.blue)
+                                                                .clipShape(RoundedRectangle(cornerRadius: 10))
+                                                                .padding(1)
+                                                                }
+                                                        
                                                     }
                                                 
                                                 
@@ -332,26 +362,48 @@ struct HomeView: View {
                                                         RoundedRectangle(cornerRadius: 10)
                                                             .foregroundStyle(.purple)
 //                                                            .padding(5)
-                                                        Text("レア度：エピック")
-                                                            .font(.system(size:10))
-                                                            .foregroundStyle(Color("myTectColor"))
-                                                        //                                                        .backgroundStyle(.blue)
-//                                                            .background(.blue)
-                                                            .clipShape(RoundedRectangle(cornerRadius: 10))
-                                                            .padding(1)
+                                                        HStack(spacing: 0) { // spacingを0に設定
+                                                                    Image(systemName: "sparkles") // SF Symbol
+                                                                        .font(.caption) // フォントサイズを調整してテキストに合わせる
+                                                                        .foregroundColor(.yellow)
+                                                            Text("エピック")
+                                                                .font(.system(size:12))
+                                                                .foregroundStyle(Color("myTectColor"))
+                                                            //                                                        .backgroundStyle(.blue)
+    //                                                            .background(.blue)
+                                                                .clipShape(RoundedRectangle(cornerRadius: 10))
+                                                                .padding(1)
+                                                                }
+//                                                        Text("レア度：エピック")
+//                                                            .font(.system(size:10))
+//                                                            .foregroundStyle(Color("myTectColor"))
+//                                                        //                                                        .backgroundStyle(.blue)
+////                                                            .background(.blue)
+//                                                            .clipShape(RoundedRectangle(cornerRadius: 10))
+//                                                            .padding(1)
                                                     }
                                                 case .legendary:
                                                     ZStack{
                                                         RoundedRectangle(cornerRadius: 10)
                                                             .foregroundStyle(.orange)
 //                                                            .padding(5)
-                                                        Text("レア度：レジェンド")
-                                                            .font(.system(size:10))
-                                                            .foregroundStyle(Color("myTectColor"))
+                                                        HStack(spacing: 0) { // spacingを0に設定
+                                                                    Image(systemName: "sparkles") // SF Symbol
+                                                                        .font(.caption) // フォントサイズを調整してテキストに合わせる
+                                                                        .foregroundColor(.yellow)
+                                                            Text("レジェンド")
+                                                                .font(.system(size:12))
+                                                                .foregroundStyle(Color("myTectColor"))
+                                                                .clipShape(RoundedRectangle(cornerRadius: 10))
+                                                                .padding(1)
+                                                                }
+//                                                        Text("レア度：レジェンド")
+//                                                            .font(.system(size:10))
+//                                                            .foregroundStyle(Color("myTectColor"))
                                                         //                                                        .backgroundStyle(.blue)
 //                                                            .background(.blue)
-                                                            .clipShape(RoundedRectangle(cornerRadius: 10))
-                                                            .padding(1)
+//                                                            .clipShape(RoundedRectangle(cornerRadius: 10))
+//                                                            .padding(1)
 //                                                            .padding([.bottom,.trailing],3)
                                                     }
                                                 default:
@@ -359,17 +411,25 @@ struct HomeView: View {
                                                         RoundedRectangle(cornerRadius: 10)
                                                             .foregroundStyle(.gray)
 //                                                            .padding(5)
-                                                        Text("レア度：なし")
-                                                            .font(.system(size:10))
-                                                            .foregroundStyle(Color("myTectColor"))
+                                                        HStack(spacing: 0) { // spacingを0に設定
+                                                                    Image(systemName: "sparkles") // SF Symbol
+                                                                        .font(.caption) // フォントサイズを調整してテキストに合わせる
+                                                                        .foregroundColor(.yellow)
+                                                            Text("なし")
+                                                                .font(.system(size:12))
+                                                                .foregroundStyle(Color("myTectColor"))
+                                                                .clipShape(RoundedRectangle(cornerRadius: 10))
+                                                                .padding(1)
+                                                                }
+                                            
                                                         //                                                        .backgroundStyle(.blue)
 //                                                            .background(.blue)
-                                                            .clipShape(RoundedRectangle(cornerRadius: 10))
-                                                            .padding(1)
+//                                                            .clipShape(RoundedRectangle(cornerRadius: 10))
+//                                                            .padding(1)
                                                     }
                                                 }
                                             }.padding(.leading,50)
-                                                .padding([.bottom,.trailing],2)
+                                            .padding([.bottom,.trailing],2)
                                         }
                                         .onTapGesture {
                                             let status = AVCaptureDevice.authorizationStatus(for: AVMediaType.video)
@@ -403,8 +463,12 @@ struct HomeView: View {
                                             }
                                         }
                                     }
-                                    .padding([.trailing,.bottom],10)
-                                    .padding(.leading,5)
+//                                    .padding([.trailing,.bottom],10)
+//                                    .padding([.leading,.top],5)
+//                                    .padding(((questArray.firstIndex(of: quest)!) % 2 == 0) ? (.leading,5) : (.trailing,5))
+//                                    .padding(.bottom,5)
+                                    .padding(.leading, (questArray.firstIndex(of: quest)!) % 2 == 0 ? 10 : 0)
+                                    .padding(.trailing, (questArray.firstIndex(of: quest)!) % 2 == 0 ? 0 : 10)
                                     
                                     
                                     
