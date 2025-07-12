@@ -146,6 +146,11 @@ struct HomeView: View {
                         }
                         .padding(.bottom,10)
                         .padding(.top,50)
+                        Text("クエスト一覧")
+                            .font(.title)
+                            .fontWeight(.bold)
+                            .font(.system(size: 30))
+//                            .foregroundStyle(Color(""))
                         LazyVGrid(columns: columns,spacing:10){
                             ForEach(questArray,id:\.self){ quest in
                                 ZStack{
@@ -284,7 +289,9 @@ struct HomeView: View {
                         .ignoresSafeArea()
                     //                            .opacity(flag ? 1 : 0)
                     RoundedRectangle(cornerRadius: 10)
-                        .padding(40)
+                        .frame(maxWidth: UIScreen.main.bounds.width - 80)
+                        .frame(maxWidth: UIScreen.main.bounds.height - 100)
+                        .padding(50)
                         .foregroundStyle(.white)
                     
                     //                            .background(.white)
@@ -336,7 +343,8 @@ struct HomeView: View {
                         }
                         
                     }
-                    .padding(50)
+                    .frame(maxWidth: UIScreen.main.bounds.width - 100)
+                    .frame(maxWidth: UIScreen.main.bounds.height - 100)
                     
                     
                 }.opacity(showThankView ? 1 : 0)
