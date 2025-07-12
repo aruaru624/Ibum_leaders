@@ -4,6 +4,7 @@ import SwiftUI
 import SwiftData
 
 class CameraViewController: UIViewController{
+    private var baseZoomFanctor: CGFloat = 1.0
     
     lazy var silhouetteUIview = UIImageView()
     
@@ -28,6 +29,7 @@ class CameraViewController: UIViewController{
         setupPreviewLayer()
         setupSilhouetteView()
         setupShutterButton()
+        setupPinchGestureRecognizer()
     }
     
     var captureSession = AVCaptureSession()
@@ -228,6 +230,39 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate{
     }
 }
 
+extension CameraViewController{
+    
+    private func setupPinchGestureRecognizer() {
+            // pinch recognizer for zooming
+            let pinchGestureRecognizer: UIPinchGestureRecognizer = UIPinchGestureRecognizer(target: self, action: #selector(self.onPinchGesture(_:)))
+            self.view.addGestureRecognizer(pinchGestureRecognizer)
+        }
+
+        @objc private func onPinchGesture(_ sender: UIPinchGestureRecognizer) {
+            if sender.state == .began {
+                self.baseZoomFanctor = (self.currentDevice?.videoZoomFactor)!
+            }
+
+            let tempZoomFactor: CGFloat = self.baseZoomFanctor * sender.scale
+            let newZoomFactdor: CGFloat
+            if tempZoomFactor < (self.currentDevice?.minAvailableVideoZoomFactor)! {
+                newZoomFactdor = (self.currentDevice?.minAvailableVideoZoomFactor)!
+            } else if (self.currentDevice?.maxAvailableVideoZoomFactor)! < tempZoomFactor {
+                newZoomFactdor = (self.currentDevice?.maxAvailableVideoZoomFactor)!
+            } else {
+                newZoomFactdor = tempZoomFactor
+            }
+
+            do {
+                try self.currentDevice?.lockForConfiguration()
+                self.currentDevice?.ramp(toVideoZoomFactor: newZoomFactdor, withRate: 32.0)
+                self.currentDevice?.unlockForConfiguration()
+            } catch {
+                print("Failed to change zoom factor.")
+            }
+        }
+}
+
 struct CameraView: UIViewControllerRepresentable {
     @Binding var quest:String
     @Binding var isActive: Bool
@@ -259,12 +294,7 @@ struct CameraView: UIViewControllerRepresentable {
         // UIViewControllerを更新するメソッド
         func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
 
-            
-//            print(isPresentedCamera.isOn)
-//            if !isPresentedCamera.isOn{
-////                isPresentedCamera.isOn = true
-//                dismiss()
-//            }
+
 
             
         }

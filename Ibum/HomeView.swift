@@ -523,6 +523,7 @@ struct HomeView: View {
                         CameraView(quest: $questTitle,isActive: $showViewController)
                             .navigationBarTitleDisplayMode(.inline)
                             .navigationTitle($questTitle)
+//                        ImagePickerView()
                     }
                     .sheet(isPresented:$showDetailView){
                         DetailView(photo: $chosenQuestPhoto,title:chosenQuestPhoto.questTitle,clearSum:$questClearSum)
@@ -556,10 +557,6 @@ struct HomeView: View {
                                             .foregroundColor(.gray)
                                             .font(.title)
                                             .padding(.leading,5)
-        //                            ZStack{
-        //                                Circle()
-        //                                Image(systemName: "")
-        //                            }
                                 }
                                 Spacer()
                             }
