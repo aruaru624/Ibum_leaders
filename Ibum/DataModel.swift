@@ -19,6 +19,11 @@ final class Photo{
     var questTitle:String
     var id:String
     
+    
+//    @Relationship(inverse: \Quest.photos)
+    var quest:Quest?
+    
+    
     init(saveDate: Date, photoData: Data, scale: Double, centerX: Double, centerY: Double, registerSns: [String], best: Bool, questTitle: String, id: String) {
         self.saveDate = saveDate
         self.photoData = photoData

@@ -138,8 +138,7 @@ class CameraViewController: UIViewController{
         latticeUIview.heightAnchor.constraint(equalToConstant: self.view.frame.width / 2 * 3).isActive = true
         latticeUIview.widthAnchor.constraint(equalToConstant: self.view.frame.width).isActive = true
         latticeUIview.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
-        
-
+    
         
         //toggleボタンを作成
         lazy var toggle = UISwitch()

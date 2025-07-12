@@ -159,6 +159,7 @@ struct HomeView: View {
                                           topTrailingRadius: 15,
                                           style: .continuous)
                                         .fill(Color(red: 156/255, green: 219/255, blue: 211/255))
+                                    
 //                                        .fill(.white)
 //                                        .stroke(Color("myTectColor"),lineWidth: 2)
                                         .shadow(color:Color("myTectColor").opacity(0.8),radius: 2)
@@ -205,33 +206,38 @@ struct HomeView: View {
                                             
 
     //
-                                            if let idd = quest.ids.first{
-                                                let descriptor = FetchDescriptor<Photo>(predicate: #Predicate<Photo>{$0.id == idd})
-                                                if let currentPhoto = try! context.fetch(descriptor).first as? Photo,
+                                            if  !quest.photos.isEmpty{
+                                            
+                                                if let currentPhoto = quest.photos.first,
                                                    let uiImage = UIImage(data: currentPhoto.photoData) {
                                                     ZStack{
                                                         Color.white
-                                                            .aspectRatio(2/3, contentMode: .fit)
+                                                            .aspectRatio(2/3, contentMode: .fill)
 //                                                            .padding(5)
-                                                        Color(red: 200/255, green:200/255, blue: 200/255)
-                                                            .aspectRatio(2/3, contentMode: .fit)
-                                                            .padding(5)
-                                                            .opacity(1.0)
-                                                            .border(Color(red: 200/255, green:200/255, blue: 200/255), width: 1)
+//                                                        Color(red: 200/255, green:200/255, blue: 200/255)
+//                                                            .aspectRatio(2/3, contentMode: .fit)
+//                                                            
+//                                                            .opacity(1.0)
+//                                                            .border(Color(red: 200/255, green:200/255, blue: 200/255), width: 1)
+//                                                            .padding(5)
                                                     Image(uiImage: uiImage)
                                                             .resizable()
-                                                            .aspectRatio(2/3, contentMode: .fill)
+                                                            .aspectRatio(2/3, contentMode: .fit)
                                                             .padding(5)
 //                                                            .opacity(1.0)
                                                     }.padding([.bottom,.leading,.trailing],5)
                                                     
                                                 }else{
                                                     ZStack{
+                                                        Color.white
+                                                            .aspectRatio(2/3, contentMode: .fill)
                                                         Color(red: 200/255, green:200/255, blue: 200/255)
                                                             .aspectRatio(2/3, contentMode: .fit)
-                                                            .padding([.leading,.trailing],5)
+//                                                            .padding([.leading,.trailing],5)
                                                             .opacity(1.0)
                                                             .border(Color(red: 200/255, green:200/255, blue: 200/255), width: 1)
+//                                                            .padding([.leading,.trailing],5)
+                                                            .padding(5)
                                                         Image(systemName: "camera")
                                                             .resizable()
                                                             .scaledToFit()
@@ -244,42 +250,27 @@ struct HomeView: View {
                                                     }.padding([.bottom,.leading,.trailing],5)
                                                 }
                                             } else {
-                                                
-                                                if let image = UIImage(named: String(quest.title)){
-                                                    ZStack{
-                                                        Color.white
-                                                            .aspectRatio(2/3, contentMode: .fit)
-//                                                            .padding(5)
-                                                        Color(red: 200/255, green:200/255, blue: 200/255)
-                                                            .aspectRatio(2/3, contentMode: .fit)
-                                                            .padding(5)
-                                                            .opacity(1.0)
-                                                            .border(Color(red: 200/255, green:200/255, blue: 200/255), width: 1)
+                                                ZStack{
+                                                    Color.white
+                                                        .aspectRatio(2/3, contentMode: .fill)
+                                                    Color(red: 200/255, green:200/255, blue: 200/255)
+                                                        .aspectRatio(2/3, contentMode: .fit)
+                                                        .opacity(1.0)
+                                                        .border(Color(red: 200/255, green:200/255, blue: 200/255), width: 1)
+                                                        .padding(5)
+                                                    if let image = UIImage(named: String(quest.title)){
+                                                        
                                                         Image(uiImage:image)
                                                             .resizable()
-                                                            .aspectRatio(2/3, contentMode: .fill)
-//                                                            .padding([.leading,.trailing],5)
-                                                            .clipShape(UnevenRoundedRectangle(
-                                                                topLeadingRadius: 0,
-                                                                bottomLeadingRadius: 15,
-                                                                bottomTrailingRadius: 0,
-                                                                topTrailingRadius: 0,
-                                                                style: .continuous))
+                                                            .aspectRatio(2/3, contentMode: .fit)
                                                             .padding(5)
                                                             .colorInvert()
-                                                            
-                                                    }
-                                                    .padding([.bottom,.leading,.trailing],5)
-                                                    
+                                                        
+                                                        
+                                                        
+                                                        
+                                                    }else{
                                                       
-                                                    
-                                                }else{
-                                                    ZStack{
-                                                        Color(red: 200/255, green:200/255, blue: 200/255)
-                                                            .aspectRatio(2/3, contentMode: .fit)
-                                                            .padding([.leading,.trailing],5)
-                                                            .opacity(1.0)
-                                                            .border(Color(red: 200/255, green:200/255, blue: 200/255), width: 1)
                                                         Image(systemName: "camera")
                                                             .resizable()
                                                             .scaledToFit()
@@ -287,14 +278,15 @@ struct HomeView: View {
                                                             .scaleEffect(0.4)
                                                             .foregroundStyle(Color(red: 53/255, green: 162/255, blue: 159/255))
                                                         
-                                                            
-                                                            
+                                                        
+                                                        
+                                                        
+                                                           
+                                                        
+                                                        
+                                                        
                                                     }
-                                                    .padding([.bottom,.leading,.trailing],5)
-                                                    
-                                                    
-                                                    
-                                                }
+                                                } .padding([.bottom,.leading,.trailing],5)
                                                 
                                                 
                                             }
@@ -441,14 +433,13 @@ struct HomeView: View {
                                                 chooseQuest = quest
                                                 print(quests.first)
                                                 
-                                                if(!quest.ids.isEmpty){
-                                                    if let idd = quest.ids.first{
-                                                        let descriptor = FetchDescriptor<Photo>(predicate: #Predicate<Photo>{$0.id == idd})
-                                                        if let currentPhoto = try! context.fetch(descriptor).first as? Photo{
+                                                if(!quest.photos.isEmpty){
+                                          
+                                                        if let currentPhoto = quest.photos.first,
+                                                           let uiImage = UIImage(data: currentPhoto.photoData) {
                                                             chosenQuestPhoto = currentPhoto
                                                             showDetailView = true
                                                         }
-                                                    }
                                                     
                                                     
                                                     
@@ -493,11 +484,16 @@ struct HomeView: View {
                             }
                             
                             questSum = quests.count
-                            questClearSum = quests.filter { !$0.ids.isEmpty }.count
+                            questClearSum = quests.filter { !$0.photos.isEmpty }.count
                             
                             questArray = quests
                         }
-                        
+                        .onChange(of:quests){
+                            questSum = quests.count
+                            questClearSum = quests.filter { !$0.photos.isEmpty }.count
+                            
+                            questArray = quests
+                        }
                        
                     }
 //                    .toolbar{
@@ -529,7 +525,7 @@ struct HomeView: View {
                             .navigationTitle($questTitle)
                     }
                     .sheet(isPresented:$showDetailView){
-                        DetailView(photo: $chosenQuestPhoto,title:chosenQuestPhoto.questTitle)
+                        DetailView(photo: $chosenQuestPhoto,title:chosenQuestPhoto.questTitle,clearSum:$questClearSum)
                     }
                     .alert("カメラ使用不可",isPresented: $showToSettingAlert){
                         Button("戻る"){}
@@ -586,8 +582,6 @@ struct HomeView: View {
                                     }
                             }
                             Button(action: {
-//                                flag = true
-//                                add()
                                 showThankView = false
                                 showViewController = true
                             }){
@@ -597,9 +591,6 @@ struct HomeView: View {
                                         .padding(10)
                                         .frame(height:70)
                                     Text("撮影する")
-    //                                    .frame(width: width / 2 ,height: 50)
-    //                                    .font(.system(size: 30))
-//                                        .frame(idealHeight:50)
                                         .fontWeight(.semibold)
                                         .foregroundStyle(.white)
                                         .padding(20)
@@ -627,4 +618,12 @@ class isPresenteCamera: ObservableObject {
     
     @Published var isOn = true
     
+}
+
+
+extension Color {
+    
+    static func rgbColor(red:Int,green:Int,blue:Int) -> Color {
+        return self.init(red: Double(red/255), green: Double(green/255), blue: Double(blue/255))
+    }
 }

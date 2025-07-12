@@ -9,6 +9,9 @@ import SwiftData
 
 @Model
 final class Quest {
+    
+    
+    
     var title: String
     var ids: [String]
     var tags: [TagSet]
@@ -22,8 +25,10 @@ final class Quest {
                 rarityOrder = rarity.order
             }
         }
-        var rarityOrder: Int
+    var rarityOrder: Int
     
+    @Relationship(deleteRule: .cascade, inverse: \Photo.quest)
+    var photos:[Photo] = []
 
     init(
         title: String,
@@ -34,7 +39,8 @@ final class Quest {
         explation: String,
         recommendedPoses: [String],
         recommendedLocation: String,
-        rarity: rarity // ⭐️ 追加
+        rarity: rarity, // ⭐️ 追加
+        photos:[Photo] = []
     ) {
         self.title = title
         self.ids = ids
@@ -46,6 +52,8 @@ final class Quest {
         self.recommendedLocation = recommendedLocation
         self.rarity = rarity
         self.rarityOrder = rarity.order
+        self.photos = photos
+        
     }
 }
 

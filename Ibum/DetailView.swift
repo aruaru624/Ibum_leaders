@@ -25,6 +25,8 @@ struct DetailView: View {
     @State var showToSettingAlert = false
     @State var phtoSavedAlert = false
     
+    @Binding var clearSum : Int
+    
 
     var body: some View {
         ZStack{
@@ -52,11 +54,12 @@ struct DetailView: View {
                     .padding(.top,UIScreen.main.bounds.height / 8)
                 Image(uiImage: UIImage(data: photo.photoData)!)
                     .resizable()
-                    .scaleEffect(scale)
+                    .scaledToFit()
+//                    .scaleEffect(scale)
 //                    .frame(width: width)
                     .clipShape(Circle())
                     .padding([.leading,.trailing],50)
-                    .scaledToFit()
+                    
 //                    .padding(.bottom, 50)
                     .overlay() {
                           Circle()
@@ -170,6 +173,7 @@ struct DetailView: View {
                             .scaledToFit()
                             .foregroundStyle(.red)
                             .padding()
+                        
                             .frame(width: 60,height:60)
                     }.alert("確認", isPresented: $isShowAlert) {
                         // ダイアログ内で行うアクション処理...
@@ -238,10 +242,12 @@ struct DetailView: View {
         do{
             let descriptor = FetchDescriptor<Quest>(predicate: #Predicate<Quest>{$0.title == title})
             let currentQuest = try context.fetch(descriptor).first
-            currentQuest?.ids.remove(at: 0)
+            currentQuest?.photos.removeAll()
             context.delete(photo)
             
             try context.save()
+            
+            clearSum -= 1
             dismiss()
         }catch{
             print(error)
