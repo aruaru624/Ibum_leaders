@@ -27,6 +27,8 @@ struct DetailView: View {
     
     @Binding var clearSum : Int
     
+    @State var photos: [Photo] = []
+    
 
     var body: some View {
         ZStack{
@@ -47,7 +49,6 @@ struct DetailView: View {
                 
 
             VStack{
-//                Spacer()
                 Text(photo.questTitle)
                     .font(.largeTitle)
                     .fontWeight(.heavy)
@@ -59,8 +60,6 @@ struct DetailView: View {
 //                    .frame(width: width)
                     .clipShape(Circle())
                     .padding([.leading,.trailing],50)
-                    
-//                    .padding(.bottom, 50)
                     .overlay() {
                           Circle()
                             .stroke(.white, lineWidth: 10)
@@ -70,99 +69,24 @@ struct DetailView: View {
 //                            .padding(.bottom, 50)
                             
                         }
+                ScrollView(.horizontal) {
+                            HStack {
+                                ForEach(photos, id: \.self) { photo in
+                                    Image(uiImage:UIImage(data:photo.photoData)!)
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width: 100)
+                                        .frame(maxHeight: 150)
+//                                        .background(Color.cyan)
+                                        .clipShape(RoundedRectangle(cornerRadius: 10))
+//                                        .padding(10)
+                                        .padding(.horizontal,10)
+                                }
+                            }
+//                            .scrollTargetLayout()
+                        }
+//                .scrollTargetBehavior(.viewAligned)
                 Spacer()
-//                Text("タグ")
-//                HStack{
-//                    ForEach(<#T##data: Range<Int>##Range<Int>#>, content: <#T##(Int) -> View#>)
-//                }
-//                Grid {
-//                    GridRow {
-//                        Image("discord")
-//                            .resizable()
-//                            .frame(width: 50,height: 50)
-//                            .scaledToFit()
-//                            .scaleEffect(0.7)
-//
-//                            .clipShape(Circle())
-//                            .contentMargins(20)
-//                            .padding()
-//                            .onTapGesture {
-//                                var flag = false
-//                                ForEach(photo.registerSns, id: \.self){ sns in
-//                                    if sns == "discord"{
-//                                        flag = true
-//                                    }
-//                                }
-//                                if flag {
-//                                    
-//                                }else{
-//                                    photo.registerSns.append("discord")
-//                                }
-//                                
-//                            }
-//                        Image("instagram")
-//                            .resizable()
-//                            .frame(width: 50,height: 50)
-//                            .scaledToFit()
-//                            .scaleEffect(0.7)
-//
-//                            .clipShape(Circle())
-//                            .contentMargins(20)
-//                            .padding()
-//                        Image("line")
-//                            .resizable()
-//                            .frame(width: 50,height: 50)
-//                            .scaledToFit()
-//                            .scaleEffect(0.7)
-//
-//                            .clipShape(Circle())
-//                            .contentMargins(20)
-//                            .padding()
-//                        Image("snapchat")
-//                            .resizable()
-//                            .frame(width: 50,height: 50)
-//                            .scaledToFit()
-//                            .scaleEffect(0.7)
-//                            .clipShape(Circle())
-//                            .contentMargins(20)
-//                            .padding()
-//                    }
-//                    GridRow {
-//                        Image("tiktok")
-//                            .resizable()
-//                            .frame(width: 50,height: 50)
-//                            .scaledToFit()
-//                            .scaleEffect(0.7)
-//                            .clipShape(Circle())
-//                            .contentMargins(20)
-//                            .padding()
-//                        Image("google")
-//                            .resizable()
-//                            .frame(width: 50,height: 50)
-//                            .scaledToFit()
-//                            .scaleEffect(0.7)
-//                            .clipShape(Circle())
-//                            .contentMargins(20)
-//                            .padding()
-//                        Image("facebook")
-//                            .resizable()
-//                            .frame(width: 50,height: 50)
-//                            .scaledToFit()
-//                            .scaleEffect(0.7)
-//                            .clipShape(Circle())
-//                            .contentMargins(20)
-//                            .padding()
-//                        Image("x")
-//                            .resizable()
-//                            .frame(width: 50,height: 50)
-//                            .scaledToFit()
-//                            .scaleEffect(0.7)
-//                            .clipShape(Circle())
-//                            .contentMargins(20)
-//                            .padding()
-//                        
-//                    }
-//                }
                 HStack{
                     
                     Button(action:{

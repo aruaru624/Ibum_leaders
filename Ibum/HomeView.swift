@@ -97,6 +97,7 @@ struct HomeView: View {
     @State private var showDetailView = false
     @State private var showThankView = false
     @State private var showToSettingAlert = false
+    @State private var isShowDialog = false
     
     @State var questSum:Int = 0
     @State var questClearSum:Int = 0
@@ -257,7 +258,8 @@ struct HomeView: View {
                                             if let currentPhoto = quest.photos.first,
                                                let uiImage = UIImage(data: currentPhoto.photoData) {
                                                 chosenQuestPhoto = currentPhoto
-                                                showDetailView = true
+//                                                showDetailView = true
+                                                isShowDialog = true
                                             }
                                             
                                             
@@ -274,6 +276,18 @@ struct HomeView: View {
                                 }
                                 .padding(.leading, (questArray.firstIndex(of: quest)!) % 2 == 0 ? 5 : 0)
                                 .padding(.trailing, (questArray.firstIndex(of: quest)!) % 2 == 0 ? 0 : 5)
+                                .confirmationDialog(questTitle, isPresented: $isShowDialog, titleVisibility: .visible) {
+                                    Button("写真を追加する") {
+                                        showThankView = true
+                                    }
+                                    Button("詳細を見る") {
+                                        showDetailView = true
+                                    }
+                                } message: {
+                                    Text("写真が既に\(chooseQuest.photos.count)枚追加されています")
+                                }
+
+
                             }
                             
                             
@@ -386,7 +400,7 @@ struct HomeView: View {
                 //                        ImagePickerView()
             }
             .sheet(isPresented:$showDetailView){
-                DetailView(photo: $chosenQuestPhoto,title:chosenQuestPhoto.questTitle,clearSum:$questClearSum)
+                DetailView(photo: $chosenQuestPhoto,title:chosenQuestPhoto.questTitle,clearSum:$questClearSum,photos:chooseQuest.photos)
             }
             .alert("カメラ使用不可",isPresented: $showToSettingAlert){
                 Button("戻る"){}
