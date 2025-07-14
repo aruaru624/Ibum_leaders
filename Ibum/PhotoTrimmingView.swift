@@ -78,7 +78,7 @@ struct PhotoTrimmingView: View {
                     .resizable()
                     .scaleEffect(scale)
                     .frame(width: width,height:width / 2 * 3)
-                    .aspectRatio(2/3, contentMode: .fill)
+                    .aspectRatio(2/3, contentMode: .fit)
                     .position(x: position.x, y: position.y)
                     .gesture(SimultaneousGesture(drag,pinch))
                 Rectangle()
@@ -198,7 +198,7 @@ struct PhotoTrimmingView: View {
                     
                     .resizable()
 //                    .frame(height: height / 3)
-                    .aspectRatio(2/3, contentMode: .fill)
+                    .aspectRatio(2/3, contentMode: .fit)
 //                    .position(x: position.x, y: position.y)
                     .scaledToFit()
                     .clipShape(RoundedRectangle(cornerRadius: 10))

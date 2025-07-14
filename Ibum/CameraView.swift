@@ -42,6 +42,9 @@ class CameraViewController: UIViewController{
     var innerCamera: AVCaptureDevice?
     var currentDevice:AVCaptureDevice?
     
+    var layverSize :CGSize?
+    var cameraSize:CGSize?
+    
     func setupDevice(){
         let deviceDiscoverySession = AVCaptureDevice.DiscoverySession(deviceTypes: [AVCaptureDevice.DeviceType.builtInWideAngleCamera], mediaType: AVMediaType.video, position: AVCaptureDevice.Position.unspecified)
         
@@ -99,12 +102,16 @@ class CameraViewController: UIViewController{
         self.view.addSubview(cameraUIview)
         cameraUIview.translatesAutoresizingMaskIntoConstraints = false
         cameraUIview.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0).isActive = true
+        
+        
 
         
         //camerauiviewにcameralayerを追加
         self.cameraPreviewLayer?.frame = cameraUIview.frame
         cameraUIview.layer.insertSublayer(self.cameraPreviewLayer!, at: 0)
         
+        layverSize = self.cameraPreviewLayer?.bounds.size
+        cameraSize = cameraUIview.frame.size
         captureSession.startRunning()
         
     }
@@ -202,8 +209,30 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate{
         if let imageData = photo.fileDataRepresentation() {
             // Data型をUIImageオブジェクトに変換
             let uiImage = UIImage(data: imageData)!
-            let cgImage = uiImage.cgImage?.cropping(to: CGRect(origin: CGPoint(x: 0, y: 0), size: CGSize(width: self.view.frame.width, height: self.view.frame.width / 2 * 3)))
-            let image = UIImage(cgImage: cgImage!)
+            print(uiImage.imageOrientation.rawValue)
+            print(uiImage.size.width)
+            print(uiImage.size.height)
+
+            print(uiImage)
+            
+//            let imgsizescale =  uiImage.size.width / cameraSize!.width
+            
+//            uiImage.imageOrientation.rawValue = 0
+//            uiImage.imageOrientation = .up
+//            let img = uiImage.rotated90DegreesCounterClockwise()!
+            let cgImage = uiImage.cgImage?.cropping(to:CGRect(x: 0, y: 0, width: uiImage.size.height, height:uiImage.size.height / 3 * 2))
+            
+//            cgImage?.resize(size: CGSize(width: 2000, height: 3000))
+            print(cgImage?.height)
+            print(cgImage?.width)
+            let image = UIImage(cgImage: cgImage! ,scale: 0, orientation: uiImage.imageOrientation)
+            
+            
+            
+            print(image.size)
+            print(layverSize)
+            print(cameraSize)
+            
 //            uiImage.size =  /*CGSize(width: self.view.frame.width, height: self.view.frame.width / 9 * 16)*/
             if let context = AppDelegate.shared.modelContext {
 
@@ -299,4 +328,52 @@ struct CameraView: UIViewControllerRepresentable {
 
             
         }
+}
+
+extension CGRect {
+    init(center: CGPoint, size: CGSize) {
+        let originX = center.x - size.width / 2.0
+        let originY = center.y - size.height / 2.0
+        self.init(x: originX, y: originY, width: size.width, height: size.height)
+    }
+}
+
+extension UIImage {
+    func rotated90DegreesCounterClockwise() -> UIImage? {
+        guard let cgImage = self.cgImage else { return nil }
+
+        let newSize = CGSize(width: size.height, height: size.width)
+
+        UIGraphicsBeginImageContextWithOptions(newSize, false, scale)
+        guard let context = UIGraphicsGetCurrentContext() else { return nil }
+
+        // 移動してから回転
+        context.translateBy(x: 0, y: newSize.height)
+        context.rotate(by: -.pi / 2)
+
+        context.draw(cgImage, in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
+
+        let rotatedImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return rotatedImage
+    }
+}
+
+extension CGImage {
+    func resize(size:CGSize) -> CGImage? {
+        let width: Int = Int(size.width)
+        let height: Int = Int(size.height)
+        
+        let bytesPerPixel = self.bitsPerPixel / self.bitsPerComponent
+        let destBytesPerRow = width * bytesPerPixel
+
+        
+        guard let colorSpace = self.colorSpace else { return nil }
+        guard let context = CGContext(data: nil, width: width, height: height, bitsPerComponent: self.bitsPerComponent, bytesPerRow: destBytesPerRow, space: colorSpace, bitmapInfo: self.alphaInfo.rawValue) else { return nil }
+        
+        context.interpolationQuality = .high
+        context.draw(self, in: CGRect(x: 0, y: 0, width: width, height: height))
+        
+        return context.makeImage()
+    }
 }
