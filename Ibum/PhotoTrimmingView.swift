@@ -78,7 +78,7 @@ struct PhotoTrimmingView: View {
                     .resizable()
                     .scaleEffect(scale)
                     .frame(width: width,height:width / 2 * 3)
-                    .aspectRatio(2/3, contentMode: .fit)
+                    .aspectRatio(2/3, contentMode: .fill)
                     .position(x: position.x, y: position.y)
                     .gesture(SimultaneousGesture(drag,pinch))
                 Rectangle()
@@ -91,13 +91,7 @@ struct PhotoTrimmingView: View {
                     }
                     .compositingGroup()
                     .ignoresSafeArea()
-//                Rectangle()
-//                    .stroke(style:
-//                                StrokeStyle(
-//                                    lineWidth: 5,
-//                                    dash: [20, 20]
-//                                ))
-//                    .frame(width: width , height:width / 2 * 3)
+
                 Color.clear
                     .contentShape(Rectangle())
                     .frame(width: width,height: height)
@@ -204,7 +198,7 @@ struct PhotoTrimmingView: View {
                     
                     .resizable()
 //                    .frame(height: height / 3)
-                    .aspectRatio(2/3, contentMode: .fit)
+                    .aspectRatio(2/3, contentMode: .fill)
 //                    .position(x: position.x, y: position.y)
                     .scaledToFit()
                     .clipShape(RoundedRectangle(cornerRadius: 10))
@@ -239,7 +233,7 @@ struct PhotoTrimmingView: View {
                 Button(action: {
                     dismissToRoot()
             //        dismiss()
-                    onDismiss()
+//                    onDismiss()
                 }){
                     Text("終 了")
                         .frame(width: width / 2 ,height: 40)

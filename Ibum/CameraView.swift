@@ -202,7 +202,8 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate{
         if let imageData = photo.fileDataRepresentation() {
             // Data型をUIImageオブジェクトに変換
             let uiImage = UIImage(data: imageData)!
-            uiImage.cgImage?.cropping(to: CGRect(origin: CGPoint(x: 0, y: 0), size: CGSize(width: self.view.frame.width, height: self.view.frame.width / 2 * 3)))
+            let cgImage = uiImage.cgImage?.cropping(to: CGRect(origin: CGPoint(x: 0, y: 0), size: CGSize(width: self.view.frame.width, height: self.view.frame.width / 2 * 3)))
+            let image = UIImage(cgImage: cgImage!)
 //            uiImage.size =  /*CGSize(width: self.view.frame.width, height: self.view.frame.width / 9 * 16)*/
             if let context = AppDelegate.shared.modelContext {
 
@@ -213,7 +214,7 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate{
                             }
                         },
                         onDismiss: {},
-                        image: uiImage,
+                        image: image,
                         questTitle:quest
                         
                     ).environment(\.modelContext, context)
