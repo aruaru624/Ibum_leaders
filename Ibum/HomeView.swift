@@ -106,6 +106,8 @@ struct HomeView: View {
     
     @State private var questArray : [Quest] = []
     
+    @State var img:UIImage?
+    
     var body: some View {
         
         NavigationStack{
@@ -157,7 +159,7 @@ struct HomeView: View {
                                 ZStack{
                                     switch quest.rarity{
                                     case .common:
-                                        LinearGradient(colors: [.blue,Color("mainColor")], startPoint: .top, endPoint: .bottom)
+                                        LinearGradient(colors: [.blue,Color("mainColor")], startPoint: .topLeading, endPoint: .bottomTrailing)
                                         
                                     case .rare:
                                         LinearGradient(colors: [.green,Color("mainColor")], startPoint: .top, endPoint: .bottom)
@@ -395,6 +397,7 @@ struct HomeView: View {
             .navigationBarTitleDisplayMode(.large)
             .navigationDestination(isPresented: $showViewController){
                 CameraView(quest: $questTitle,isActive: $showViewController)
+//                CameraCaptureView(image: $img)
                     .navigationBarTitleDisplayMode(.inline)
                     .navigationTitle($questTitle)
                 //                        ImagePickerView()
